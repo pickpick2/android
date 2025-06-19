@@ -8,10 +8,15 @@ import com.pickpick.pickpick.presentation.login.LoginScreen
 
 import androidx.compose.material3.*
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.pickpick.pickpick.presentation.policy.PolicyScreen
+import com.pickpick.pickpick.presentation.signup.SignUpScreen
+import com.pickpick.pickpick.presentation.signup.viewmodel.SignUpViewModel
 import com.pickpick.pickpick.presentation.start.StartScreen
 
 @Composable
@@ -69,8 +74,24 @@ fun NavGraphBuilder.authGraph(
         composable<AuthRoute.FindPasswordRoute> { backStackEntry ->
         }
         composable<AuthRoute.SignUpRoute> { backStackEntry ->
+            // ✅ 중첩 그래프 레벨에서 ViewModel 생성 (AuthGraph 스코프)
+            val authGraphEntry = remember(backStackEntry) {
+                navHostController.getBackStackEntry<AuthRoute.SignUpRoute>()
+            }
+            val viewModel = hiltViewModel<SignUpViewModel>(authGraphEntry)
+            SignUpScreen(
+                viewModel = viewModel,
+                onNavigateToPolicy = { navHostController.navigate(AuthRoute.PolicyRoute) },
+                onNavigateToComplete = { navHostController.navigate(AuthRoute.CompleteRoute) })
         }
         composable<AuthRoute.PolicyRoute> { backStackEntry ->
+            val authGraphEntry = remember(backStackEntry) {
+                navHostController.getBackStackEntry<AuthRoute.SignUpRoute>()
+            }
+            val viewModel = hiltViewModel<SignUpViewModel>(authGraphEntry)
+
+            PolicyScreen(
+                viewModel = viewModel, onNavigateToSignUp = { navHostController.popBackStack() })
         }
         composable<AuthRoute.UpdatePasswordRoute> { backStackEntry ->
         }
