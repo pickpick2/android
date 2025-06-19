@@ -14,6 +14,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.pickpick.pickpick.presentation.findemail.FindEmailScreen
 import com.pickpick.pickpick.presentation.policy.PolicyScreen
 import com.pickpick.pickpick.presentation.signup.SignUpScreen
 import com.pickpick.pickpick.presentation.signup.viewmodel.SignUpViewModel
@@ -70,6 +71,15 @@ fun NavGraphBuilder.authGraph(
             )
         }
         composable<AuthRoute.FindEmailRoute> { backStackEntry ->
+            FindEmailScreen(
+                onNavigateToLogin = {
+                    navHostController.navigate(AuthRoute.LoginRoute) {
+                        popUpTo(AuthRoute.LoginRoute) {
+                            inclusive = true
+                        }
+                    }
+                },
+                onNavigateToPassword = { navHostController.navigate(AuthRoute.FindPasswordRoute) })
         }
         composable<AuthRoute.FindPasswordRoute> { backStackEntry ->
         }
