@@ -33,6 +33,9 @@ import kotlinx.coroutines.flow.asStateFlow
 fun LoginScreen(
     modifier: Modifier = Modifier,
     viewModel: LoginViewModel = hiltViewModel(),
+    onNavigateToMain:() -> Unit,
+    onNavigateToEmail: () -> Unit,
+    onNavigateToPassword: () -> Unit,
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -62,8 +65,8 @@ fun LoginScreen(
         )
 
         FindAuthButton(
-            onNavigateToEmail = {},
-            onNavigateToPassword = {},
+            onNavigateToEmail = onNavigateToEmail,
+            onNavigateToPassword = onNavigateToPassword,
         )
 
         if (uiState.value.errorText != null) Text(
@@ -77,5 +80,9 @@ fun LoginScreen(
 @Composable
 @Preview(showBackground = true)
 fun LoginScreenPreview() {
-    LoginScreen()
+    LoginScreen(
+        onNavigateToEmail = {},
+        onNavigateToPassword = {},
+        onNavigateToMain = {}
+    )
 }
