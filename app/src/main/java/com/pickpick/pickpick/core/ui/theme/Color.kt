@@ -21,10 +21,11 @@ val SecondaryLighter = Color(0xFFFFDDC4)
 val Success = Color(0xFF82DD55)
 val Warning = Color(0xFFEDB95E)
 val Danger = Color(0xFFE23636)
+val Pink = Color(0xFFFF2D55)
 
 
 /* Gray Color */
-val Boarder = Color(0xFFAFAFAF)
+val Border = Color(0xFFAFAFAF)
 val G900 = Color(0xFF1A1E22)
 val G800 = Color(0xFF33373B)
 val G700 = Color(0xFF4C5054)
