@@ -79,7 +79,7 @@ fun LoginForm(
                 )
             }, singleLine = true, keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next,
-            )
+            ),
         )
         Spacer(modifier = Modifier.height(34.dp))
         UnderlineTextField(
