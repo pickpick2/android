@@ -14,6 +14,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.pickpick.pickpick.presentation.info.InfoScreen
 import com.pickpick.pickpick.presentation.policy.PolicyScreen
 import com.pickpick.pickpick.presentation.signup.SignUpScreen
 import com.pickpick.pickpick.presentation.signup.viewmodel.SignUpViewModel
@@ -98,4 +99,37 @@ fun NavGraphBuilder.authGraph(
         composable<AuthRoute.CompleteRoute> { backStackEntry ->
         }
     }
+}
+
+fun NavGraphBuilder.infoGraph(
+    navHostController: NavHostController,
+    onInfoComplete: () -> Unit,
+) {
+
+    navigation<InfoGraph>(
+        startDestination = InfoRoute.ProfileRoute
+    ) {
+        composable<InfoRoute.ProfileRoute> { backStackEntry ->
+            InfoScreen()
+        }
+
+        composable<InfoRoute.CompleteRoute> { backStackEntry ->
+
+        }
+    }
+
+}
+
+fun NavGraphBuilder.mainGraph(
+    navHostController: NavHostController,
+) {
+
+    navigation<MainGraph>(
+        startDestination = MainRoute.StartRoute
+    ) {
+        composable<MainRoute.StartRoute> { backStackEntry ->
+
+        }
+    }
+
 }
