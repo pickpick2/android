@@ -20,8 +20,8 @@ import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicTypography.Body1Reg
 @Composable
 fun MainButton(
     modifier: Modifier = Modifier,
-    text: String = "",
-    onClick: () -> Unit = {},
+    text: String ,
+    onClick: () -> Unit ,
     shape: Shape = RoundedCornerShape(10.dp),
     enabled: Boolean = true,
 ) {
@@ -47,6 +47,7 @@ fun MainButton(
 @Composable
 fun MainButtonPreview() {
     MainButton(
-        text = "main button"
+        text = "main button",
+        onClick = {}
     )
 }
