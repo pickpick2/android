@@ -24,6 +24,8 @@
     <!-- Navigation Messages -->
     <string name="go_to_login">로그인 하러가기</string>
     <string name="not_member_yet">아직 회원이 아니신가요?</string>
+    <string name="go_to_camera">사진 찍으러 가기</string>
+    <string name="go_to_gallery">내 앨범 보러가기</string>
 
     <!-- Validation Error Messages -->
     <string name="error_invalid_credentials">존재하지 않는 ID, 혹은 비밀번호가 틀렸습니다.</string>

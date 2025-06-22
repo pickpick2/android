@@ -16,6 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.pickpick.pickpick.presentation.info.InfoScreen
 import com.pickpick.pickpick.presentation.info.viewmodel.InfoViewModel
+import com.pickpick.pickpick.presentation.main.MainScreen
 import com.pickpick.pickpick.presentation.policy.PolicyScreen
 import com.pickpick.pickpick.presentation.signup.SignUpScreen
 import com.pickpick.pickpick.presentation.signup.viewmodel.SignUpViewModel
@@ -142,7 +143,10 @@ fun NavGraphBuilder.mainGraph(
         startDestination = MainRoute.StartRoute
     ) {
         composable<MainRoute.StartRoute> { backStackEntry ->
-
+            MainScreen(
+                onCameraClick = {},
+                onGalleryClick = {}
+            )
         }
     }
 
