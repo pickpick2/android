@@ -14,6 +14,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.pickpick.pickpick.presentation.info.InfoScreen
+import com.pickpick.pickpick.presentation.info.viewmodel.InfoViewModel
+import com.pickpick.pickpick.presentation.main.MainScreen
 import com.pickpick.pickpick.presentation.policy.PolicyScreen
 import com.pickpick.pickpick.presentation.signup.SignUpScreen
 import com.pickpick.pickpick.presentation.signup.viewmodel.SignUpViewModel
@@ -42,6 +45,11 @@ fun NavGraph(
             // 인증 관련 그래프 (로그인, 회원가입 등)
             authGraph(navController, onAuthComplete = {})
 
+            // 정보 입력 그래프
+            infoGraph(navController, onInfoComplete = {})
+
+            // 메인 그래프
+            mainGraph(navController)
         }
 
 
@@ -98,4 +106,48 @@ fun NavGraphBuilder.authGraph(
         composable<AuthRoute.CompleteRoute> { backStackEntry ->
         }
     }
+}
+
+fun NavGraphBuilder.infoGraph(
+    navHostController: NavHostController,
+    onInfoComplete: () -> Unit,
+) {
+
+    navigation<InfoGraph>(
+        startDestination = InfoRoute.ProfileRoute
+    ) {
+        composable<InfoRoute.ProfileRoute> { backStackEntry ->
+            val infoGraphEntry = remember(backStackEntry) {
+                navHostController.getBackStackEntry<InfoRoute.ProfileRoute>()
+            }
+            val viewModel = hiltViewModel<InfoViewModel>(infoGraphEntry)
+
+            InfoScreen(
+                viewModel = viewModel,
+                onNavigateToComplete = onInfoComplete
+            )
+        }
+
+        composable<InfoRoute.CompleteRoute> { backStackEntry ->
+
+        }
+    }
+
+}
+
+fun NavGraphBuilder.mainGraph(
+    navHostController: NavHostController,
+) {
+
+    navigation<MainGraph>(
+        startDestination = MainRoute.StartRoute
+    ) {
+        composable<MainRoute.StartRoute> { backStackEntry ->
+            MainScreen(
+                onCameraClick = {},
+                onGalleryClick = {}
+            )
+        }
+    }
+
 }
