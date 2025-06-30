@@ -6,18 +6,20 @@ import androidx.navigation.NavHostController
 import com.pickpick.pickpick.presentation.login.LoginScreen
 
 
-import androidx.compose.material3.*
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.pickpick.pickpick.presentation.complete.CompleteScreen
 import com.pickpick.pickpick.presentation.findemail.FindEmailScreen
+import com.pickpick.pickpick.presentation.findpassword.FindPasswordScreen
 import com.pickpick.pickpick.presentation.policy.PolicyScreen
+import com.pickpick.pickpick.presentation.resetpw.ResetPWScreen
 import com.pickpick.pickpick.presentation.signup.SignUpScreen
 import com.pickpick.pickpick.presentation.signup.viewmodel.SignUpViewModel
+import com.pickpick.pickpick.presentation.splash.SplashScreen
 import com.pickpick.pickpick.presentation.start.StartScreen
 
 @Composable
@@ -34,10 +36,15 @@ fun NavGraph(
             modifier = modifier,
         ) {
             composable<SplashRoute> {
-                LaunchedEffect(Unit) {
-                    navController.navigate(AuthGraph)
-                }
-                Text("Splash")
+                SplashScreen(
+                    onNavigateToLogin = {
+                        navController.navigate(AuthGraph) {
+                            popUpTo(SplashRoute) {
+                                inclusive = true
+                            }
+                        }
+                    }
+                )
             }
 
             // 인증 관련 그래프 (로그인, 회원가입 등)
@@ -79,9 +86,19 @@ fun NavGraphBuilder.authGraph(
                         }
                     }
                 },
-                onNavigateToPassword = { navHostController.navigate(AuthRoute.FindPasswordRoute) })
+                onNavigateToPassword = { navHostController.navigate(AuthRoute.FindPasswordRoute) },
+            )
         }
         composable<AuthRoute.FindPasswordRoute> { backStackEntry ->
+            FindPasswordScreen(
+                onNavigateToResetPW = { navHostController.navigate(AuthRoute.ResetPasswordRoute) },
+                onNavigateToEmail = {
+                    navHostController.navigate(AuthRoute.FindEmailRoute) {
+                        popUpTo(AuthRoute.FindEmailRoute) {
+                            inclusive = true
+                        }
+                    }
+                })
         }
         composable<AuthRoute.SignUpRoute> { backStackEntry ->
             // ✅ 중첩 그래프 레벨에서 ViewModel 생성 (AuthGraph 스코프)
@@ -103,9 +120,20 @@ fun NavGraphBuilder.authGraph(
             PolicyScreen(
                 viewModel = viewModel, onNavigateToSignUp = { navHostController.popBackStack() })
         }
-        composable<AuthRoute.UpdatePasswordRoute> { backStackEntry ->
+        composable<AuthRoute.ResetPasswordRoute> { backStackEntry ->
+            ResetPWScreen(
+                onNavigateToComplete = { navHostController.navigate(AuthRoute.CompleteRoute) })
         }
         composable<AuthRoute.CompleteRoute> { backStackEntry ->
+            CompleteScreen(
+                onNavigateToLogin = {
+                    navHostController.navigate(AuthRoute.LoginRoute) {
+                        popUpTo(AuthRoute.LoginRoute) {
+                            inclusive = true
+                        }
+                    }
+                }
+            )
         }
     }
 }

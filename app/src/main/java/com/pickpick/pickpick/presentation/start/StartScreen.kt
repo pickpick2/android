@@ -1,5 +1,6 @@
 package com.pickpick.pickpick.presentation.start
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -49,11 +50,10 @@ fun StartScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(
-            "로고",
+        Image(
             modifier = modifier
-                .size(180.dp)
-                .background(G100),
+                .size(180.dp),
+            painter = painterResource(R.drawable.logo), contentDescription = "logo"
         )
         Spacer(modifier = modifier.height(88.dp))
         MainButton(

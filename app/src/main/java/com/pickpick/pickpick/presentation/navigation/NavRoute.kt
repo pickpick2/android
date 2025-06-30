@@ -31,7 +31,7 @@ sealed class AuthRoute {
     data object PolicyRoute : AuthRoute()
 
     @Serializable
-    data object UpdatePasswordRoute : AuthRoute()
+    data object ResetPasswordRoute : AuthRoute()
 
     // 회원가입 완료, 비밀번호 변경 완료
     @Serializable

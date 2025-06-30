@@ -9,7 +9,8 @@
 
     <!-- Authentication -->
     <string name="login">로그인</string>
-    <string name="signup">회원가입</string> <!-- 오타 수정: singup -> signup -->
+    <string name="signup">회원가입</string>
+    <string name="reset_password">비밀번호 재설정</string>
 
     <!-- Input Placeholders -->
     <string name="email_placeholder">아이디를 입력해주세요.</string>
@@ -50,5 +51,7 @@
 개인정보 처리 위탁 시, 외부 업체에 적절한 보호조치를 취하며, 사용자의 동의를 받습니다.</string>
 
     <string name="check">확인</string>
+    <string name="complete">완료</string>
+    <string name="next">다음</string>
 
 </resources>
