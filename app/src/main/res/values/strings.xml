@@ -54,5 +54,11 @@
 
     <string name="check">확인</string>
     <string name="signup_complete">가입하기</string>
+    <string name="create_room">방 만들기</string>
+    <string name="start">시작하기</string>
+    <string name="invite">초대하기</string>
+
+    <!-- Room -->
+    <string name="create_room_title">방 정보를 설정해 주세요.</string>
 
 </resources>
