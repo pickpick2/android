@@ -62,5 +62,9 @@
 
     <!-- Room -->
     <string name="create_room_title">방 정보를 설정해 주세요.</string>
+    <string name="select_frame_title">프레임을 선택해주세요.</string>
+    <string name="select_frame_notice">3초 뒤 자동으로 선택됩니다.</string>
+    <string name="frame_title">프레임이 선택됐습니다.</string>
+    <string name="frame_notice">3초 뒤 다음 단계로 이동합니다.</string>
 
 </resources>
