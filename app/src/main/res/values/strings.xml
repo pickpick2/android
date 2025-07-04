@@ -67,4 +67,9 @@
     <string name="frame_title">프레임이 선택됐습니다.</string>
     <string name="frame_notice">3초 뒤 다음 단계로 이동합니다.</string>
 
+    <!-- top bar -->
+    <string name="create_room_top_bar">방 생성</string>
+    <string name="ready_room_top_bar">대기실</string>
+    <string name="album_top_bar">내 앨범</string>
+
 </resources>
