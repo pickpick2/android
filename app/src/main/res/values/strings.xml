@@ -16,6 +16,8 @@
     <string name="password_placeholder">비밀번호를 입력해주세요.</string> <!-- pw -> password로 명확화 -->
     <string name="password_confirm_placeholder">비밀번호 확인</string>
     <string name="nickname_placeholder">닉네임을 입력해주세요.</string>
+    <string name="create_room_name_placeholder">방 제목</string>
+    <string name="create_room_people_placeholder">인원 선택</string>
 
     <!-- Account Recovery -->
     <string name="find_email">아이디 찾기</string>

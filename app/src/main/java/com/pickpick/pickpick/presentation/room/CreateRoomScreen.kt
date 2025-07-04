@@ -8,26 +8,43 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.pickpick.pickpick.R
 import com.pickpick.pickpick.core.ui.component.MainButton
+import com.pickpick.pickpick.core.ui.component.UnderlineTextField
 import com.pickpick.pickpick.core.ui.theme.Border
+import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicFallback
 import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicTypography.Body1Regular
+import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicTypography.DetailRegular
+import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicTypography.Heading1
+import com.pickpick.pickpick.presentation.room.viewmodel.RoomViewModel
 
 @Composable
-fun CreateChatRoom(
-    modifier: Modifier = Modifier
+fun CreateRoomScreen(
+    modifier: Modifier = Modifier,
+    viewModel: RoomViewModel = hiltViewModel(),
 ) {
+
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
 
     Column(
         modifier = modifier
             .fillMaxSize()
+            .padding(horizontal = 56.dp)
             .imePadding(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
@@ -35,15 +52,23 @@ fun CreateChatRoom(
 
         Text(
             text = stringResource(R.string.create_room_title),
-            style = Body1Regular.copy(
-                color = Border,
-                textAlign = TextAlign.Center
-            )
+            style = Heading1
         )
 
         Spacer(modifier = Modifier.height(70.dp))
 
-        // TODO: 방 제목, 인원 선택 추가
+        UnderlineTextField(
+            value = uiState.value.roomName, onValueChange = viewModel::updateRoomName,
+            placeholder = {
+                Text(
+                    text = stringResource(R.string.create_room_name_placeholder),
+                    style = DetailRegular.copy(color = Border)
+                )
+            },
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+        )
+
+        // TODO: 인원 선택 추가
 
         Spacer(modifier = Modifier.height(70.dp))
 
@@ -54,4 +79,10 @@ fun CreateChatRoom(
         )
     }
 
+}
+
+@Composable
+@Preview(showBackground = true)
+fun CreateRoomScreenPreview() {
+    CreateRoomScreen()
 }

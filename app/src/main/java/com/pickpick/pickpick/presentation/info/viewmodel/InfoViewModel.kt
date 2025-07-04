@@ -11,7 +11,7 @@ class InfoViewModel @Inject constructor() : BaseViewModel<InfoUiState>(InfoUiSta
     // TODO: 프로필 사진 추가
 
     fun updateNickname(nickname: String) {
-        val enabled = enabledButton(_uiState.value.nickname)
+        val enabled = enabledButton(nickname)
 
         _uiState.update {
             it.copy(nickname = nickname, enabled = enabled)
