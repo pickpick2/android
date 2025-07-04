@@ -68,9 +68,9 @@ fun RoomMemberItem(
                             .clip(CircleShape)
                     )
 
-                    // TODO: 방장인 경우에만 퍄냐ㅠㅣㄷ
+                    // TODO: 방장인 경우에만 visible
                     Image(
-                        painter = painterResource(id = R.drawable.icon_pencil),
+                        painter = painterResource(id = R.drawable.icon_crown),
                         contentDescription = null,
                         modifier = Modifier
                             .size(20.dp)
