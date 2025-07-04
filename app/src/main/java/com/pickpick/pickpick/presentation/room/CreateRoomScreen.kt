@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
@@ -14,21 +13,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.pickpick.pickpick.R
 import com.pickpick.pickpick.core.ui.component.MainButton
 import com.pickpick.pickpick.core.ui.component.UnderlineTextField
 import com.pickpick.pickpick.core.ui.theme.Border
-import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicFallback
-import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicTypography.Body1Regular
 import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicTypography.DetailRegular
 import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicTypography.Heading1
 import com.pickpick.pickpick.presentation.room.viewmodel.RoomViewModel
@@ -37,6 +30,7 @@ import com.pickpick.pickpick.presentation.room.viewmodel.RoomViewModel
 fun CreateRoomScreen(
     modifier: Modifier = Modifier,
     viewModel: RoomViewModel = hiltViewModel(),
+    onNavigateToComplete: () -> Unit,
 ) {
 
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
@@ -74,8 +68,8 @@ fun CreateRoomScreen(
 
         MainButton(
             text = stringResource(R.string.create_room),
-            enabled = true,
-            onClick = {}
+            enabled = uiState.value.enabled,
+            onClick = onNavigateToComplete
         )
     }
 
@@ -84,5 +78,5 @@ fun CreateRoomScreen(
 @Composable
 @Preview(showBackground = true)
 fun CreateRoomScreenPreview() {
-    CreateRoomScreen()
+    CreateRoomScreen(onNavigateToComplete = {})
 }

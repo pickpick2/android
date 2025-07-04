@@ -29,5 +29,4 @@ class RoomViewModel @Inject constructor() : BaseViewModel<RoomUiState>(RoomUiSta
     ): Boolean =
         roomName.isNotEmpty() && people > 0
 
-
 }
