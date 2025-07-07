@@ -14,7 +14,8 @@ import com.pickpick.pickpick.core.ui.component.MainButton
 @Composable
 fun ReadyScreen(
     modifier: Modifier = Modifier,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onNavigatePickStart: () -> Unit
 ) {
 
     val items = listOf("테스트")

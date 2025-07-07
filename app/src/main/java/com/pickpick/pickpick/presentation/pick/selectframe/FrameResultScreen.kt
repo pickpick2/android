@@ -26,7 +26,7 @@ import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicTypography.Heading1
 import com.pickpick.pickpick.presentation.pick.room.viewmodel.RoomViewModel
 
 @Composable
-fun FrameScreen(
+fun FrameResultScreen(
     modifier: Modifier = Modifier,
     viewModel: RoomViewModel = hiltViewModel(),
     onNavigateToNext: () -> Unit,

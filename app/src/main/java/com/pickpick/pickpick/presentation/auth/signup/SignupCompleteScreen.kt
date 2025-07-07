@@ -18,7 +18,7 @@ import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicTypography.Body1Reg
 import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicTypography.Heading1
 
 @Composable
-fun CompleteScreen(
+fun SignupCompleteScreen(
     modifier: Modifier = Modifier,
     onNavigateToMain: () -> Unit,
 ) {
