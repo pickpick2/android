@@ -1,4 +1,4 @@
-package com.pickpick.pickpick.presentation.info.component
+package com.pickpick.pickpick.presentation.auth.info.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column

@@ -1,15 +1,16 @@
 package com.pickpick.pickpick.presentation.navigation
 
-
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.pickpick.pickpick.presentation.album.AlbumScreen
 import com.pickpick.pickpick.presentation.auth.complete.CompleteScreen
 import com.pickpick.pickpick.presentation.auth.findemail.FindEmailScreen
 import com.pickpick.pickpick.presentation.auth.findpassword.FindPasswordScreen
@@ -19,17 +20,21 @@ import com.pickpick.pickpick.presentation.auth.resetpw.ResetPWScreen
 import com.pickpick.pickpick.presentation.auth.signup.SignUpScreen
 import com.pickpick.pickpick.presentation.auth.signup.viewmodel.SignUpViewModel
 import com.pickpick.pickpick.presentation.auth.start.StartScreen
-import com.pickpick.pickpick.presentation.info.InfoScreen
-import com.pickpick.pickpick.presentation.info.viewmodel.InfoViewModel
+import com.pickpick.pickpick.presentation.auth.info.InfoScreen
+import com.pickpick.pickpick.presentation.auth.info.viewmodel.InfoViewModel
+import com.pickpick.pickpick.presentation.auth.signup.SignupCompleteScreen
 import com.pickpick.pickpick.presentation.main.MainScreen
 import com.pickpick.pickpick.presentation.pick.backgroundresult.BackgroundResultScreen
 import com.pickpick.pickpick.presentation.pick.captureresult.CaptureResultScreen
-import com.pickpick.pickpick.presentation.pick.imagedecorator.DrawingScreen
+import com.pickpick.pickpick.presentation.pick.room.CreateRoomScreen
+import com.pickpick.pickpick.presentation.pick.room.ReadyScreen
 import com.pickpick.pickpick.presentation.pick.selectbackground.SelectBackgroundScreen
+import com.pickpick.pickpick.presentation.pick.selectframe.FrameResultScreen
+import com.pickpick.pickpick.presentation.pick.selectframe.SelectFrameScreen
 import com.pickpick.pickpick.presentation.pick.selectslot.SelectSlotScreen
 import com.pickpick.pickpick.presentation.pick.takepicture.TakePictureScreen
-import com.pickpick.pickpick.presentation.splash.SplashScreen
-
+import com.pickpick.pickpick.presentation.SplashScreen
+import com.pickpick.pickpick.presentation.pick.selectframe.viewmodel.FrameViewModel
 
 @Composable
 fun NavGraph(
@@ -47,7 +52,7 @@ fun NavGraph(
             composable<SplashRoute> {
                 SplashScreen(
                     onNavigateToLogin = {
-                        navController.navigate(PickGraph) {
+                        navController.navigate(MainRoute.StartRoute) {
                             popUpTo(SplashRoute) {
                                 inclusive = true
                             }
@@ -60,11 +65,15 @@ fun NavGraph(
 
             // 픽픽 그래프
             pickGraph(navController, onPickComplete = {})
+
             // 정보 입력 그래프
             infoGraph(navController, onInfoComplete = {})
 
             // 메인 그래프
             mainGraph(navController)
+
+            // 앨범 그래프
+            albumGraph(navController)
         }
 
 
@@ -124,7 +133,7 @@ fun NavGraphBuilder.authGraph(
             SignUpScreen(
                 viewModel = viewModel,
                 onNavigateToPolicy = { navHostController.navigate(AuthRoute.PolicyRoute) },
-                onNavigateToComplete = { navHostController.navigate(AuthRoute.CompleteRoute) })
+                onNavigateToComplete = { navHostController.navigate(InfoRoute.ProfileRoute) })
         }
         composable<AuthRoute.PolicyRoute> { backStackEntry ->
             val authGraphEntry = remember(backStackEntry) {
@@ -160,6 +169,58 @@ fun NavGraphBuilder.pickGraph(
     navigation<PickGraph>(
         startDestination = PickRoute.PictureDecorateRoute
     ) {
+        composable<PickRoute.CreateRoomRoute> { backStackEntry ->
+            CreateRoomScreen(
+                onNavigateToComplete = {
+                    navHostController.navigate(PickRoute.ReadyRoute)
+                },
+                onBackClick = {
+                    navHostController.popBackStack()
+                }
+            )
+        }
+
+        composable<PickRoute.ReadyRoute> { backStackEntry ->
+            ReadyScreen(
+                onNavigatePickStart = {
+                    navHostController.navigate(PickRoute.SelectFrameRoute)
+                },
+                onBackClick = {
+                    navHostController.popBackStack()
+                }
+            )
+        }
+
+        composable<PickRoute.SelectFrameRoute> { backStackEntry ->
+            val pickGraphEntry = remember(backStackEntry) {
+                navHostController.getBackStackEntry<PickRoute.SelectFrameRoute>()
+            }
+
+            val viewModel = hiltViewModel<FrameViewModel>(pickGraphEntry)
+
+            SelectFrameScreen(
+                viewModel = viewModel,
+                onNavigateToComplete = {
+                    navHostController.navigate(PickRoute.FrameResultRoute)
+                }
+            )
+        }
+
+        composable<PickRoute.FrameResultRoute> { backStackEntry ->
+            val pickGraphEntry = remember(backStackEntry) {
+                navHostController.getBackStackEntry<PickRoute.SelectFrameRoute>()
+            }
+
+            val viewModel = hiltViewModel<FrameViewModel>(pickGraphEntry)
+
+            FrameResultScreen(
+                viewModel = viewModel,
+                onNavigateToNext = {
+                    navHostController.navigate(PickRoute.SelectBackgroundRoute)
+                }
+            )
+        }
+
         composable<PickRoute.SelectBackgroundRoute> { backStackEntry ->
             SelectBackgroundScreen(
                 onNavigateToResult = {
@@ -192,7 +253,7 @@ fun NavGraphBuilder.pickGraph(
                 })
         }
         composable<PickRoute.PictureDecorateRoute> { backStackEntry ->
-            DrawingScreen()
+//            DrawingScreen()
         }
     }
 }
@@ -218,7 +279,11 @@ fun NavGraphBuilder.infoGraph(
         }
 
         composable<InfoRoute.CompleteRoute> { backStackEntry ->
-
+            SignupCompleteScreen(
+                onNavigateToMain = {
+                    navHostController.navigate(MainRoute.StartRoute)
+                }
+            )
         }
     }
 
@@ -233,10 +298,30 @@ fun NavGraphBuilder.mainGraph(
     ) {
         composable<MainRoute.StartRoute> { backStackEntry ->
             MainScreen(
-                onCameraClick = {},
-                onGalleryClick = {}
+                onCameraClick = {
+                    navHostController.navigate(PickRoute.CreateRoomRoute)
+                },
+                onGalleryClick = {
+                    navHostController.navigate(AlbumRoute.AlbumListRoute)
+                }
             )
         }
     }
 
+}
+
+fun NavGraphBuilder.albumGraph(
+    navHostController: NavHostController,
+) {
+    navigation<AlbumGraph>(
+        startDestination = AlbumRoute.AlbumListRoute
+    ) {
+        composable<AlbumRoute.AlbumListRoute> {
+            AlbumScreen(
+                onBackClick = {
+                    navHostController.popBackStack()
+                }
+            )
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package com.pickpick.pickpick.core.ui.component.timer
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -23,7 +24,8 @@ fun TimerText(
     modifier: Modifier = Modifier,
     time: Int,
     iconSize: Dp = 12.dp,
-    textStyle: TextStyle = Body2Regular.copy(color = PrimaryDefault)
+    textStyle: TextStyle = Body2Regular.copy(color = PrimaryDefault),
+    @StringRes textResId: Int = R.string.auto_selection_timer
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Image(
@@ -33,7 +35,7 @@ fun TimerText(
         )
         Spacer(modifier = modifier.width(5.dp))
         Text(
-            stringResource(R.string.auto_selection_timer, time), style = textStyle
+            stringResource(textResId, time), style = textStyle
         )
     }
 }

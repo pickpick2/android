@@ -1,4 +1,4 @@
-package com.pickpick.pickpick.presentation.info
+package com.pickpick.pickpick.presentation.auth.info
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -38,8 +38,8 @@ import com.pickpick.pickpick.core.ui.component.UnderlineTextField
 import com.pickpick.pickpick.core.ui.theme.Border
 import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicFallback
 import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicTypography.Body1Regular
-import com.pickpick.pickpick.presentation.info.component.InfoTitleContent
-import com.pickpick.pickpick.presentation.info.viewmodel.InfoViewModel
+import com.pickpick.pickpick.presentation.auth.info.component.InfoTitleContent
+import com.pickpick.pickpick.presentation.auth.info.viewmodel.InfoViewModel
 
 @Composable
 fun InfoScreen(
