@@ -1,4 +1,4 @@
-package com.pickpick.pickpick.presentation.room
+package com.pickpick.pickpick.presentation.pick.room
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -30,7 +30,7 @@ import com.pickpick.pickpick.core.ui.theme.Border
 import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicTypography.DetailRegular
 import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicTypography.Heading1
 import com.pickpick.pickpick.presentation.album.component.CustomDropdown
-import com.pickpick.pickpick.presentation.room.viewmodel.RoomViewModel
+import com.pickpick.pickpick.presentation.pick.room.viewmodel.RoomViewModel
 
 @Composable
 fun CreateRoomScreen(

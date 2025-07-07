@@ -1,4 +1,4 @@
-package com.pickpick.pickpick.presentation.room
+package com.pickpick.pickpick.presentation.pick.selectframe
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -23,7 +23,7 @@ import com.pickpick.pickpick.R
 import com.pickpick.pickpick.core.ui.theme.PrimaryDefault
 import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicTypography.Body2Regular
 import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicTypography.Heading1
-import com.pickpick.pickpick.presentation.room.viewmodel.RoomViewModel
+import com.pickpick.pickpick.presentation.pick.room.viewmodel.RoomViewModel
 
 @Composable
 fun FrameScreen(

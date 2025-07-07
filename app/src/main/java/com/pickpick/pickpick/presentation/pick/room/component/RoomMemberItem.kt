@@ -1,4 +1,4 @@
-package com.pickpick.pickpick.presentation.room.component
+package com.pickpick.pickpick.presentation.pick.room.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

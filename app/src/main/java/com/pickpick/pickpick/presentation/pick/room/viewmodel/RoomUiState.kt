@@ -1,4 +1,4 @@
-package com.pickpick.pickpick.presentation.room.viewmodel
+package com.pickpick.pickpick.presentation.pick.room.viewmodel
 
 import com.pickpick.pickpick.core.presentation.UiState
 

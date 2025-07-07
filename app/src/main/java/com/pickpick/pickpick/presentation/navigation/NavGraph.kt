@@ -19,8 +19,8 @@ import com.pickpick.pickpick.presentation.auth.resetpw.ResetPWScreen
 import com.pickpick.pickpick.presentation.auth.signup.SignUpScreen
 import com.pickpick.pickpick.presentation.auth.signup.viewmodel.SignUpViewModel
 import com.pickpick.pickpick.presentation.auth.start.StartScreen
-import com.pickpick.pickpick.presentation.info.InfoScreen
-import com.pickpick.pickpick.presentation.info.viewmodel.InfoViewModel
+import com.pickpick.pickpick.presentation.auth.info.InfoScreen
+import com.pickpick.pickpick.presentation.auth.info.viewmodel.InfoViewModel
 import com.pickpick.pickpick.presentation.main.MainScreen
 import com.pickpick.pickpick.presentation.pick.backgroundresult.BackgroundResultScreen
 import com.pickpick.pickpick.presentation.pick.captureresult.CaptureResultScreen

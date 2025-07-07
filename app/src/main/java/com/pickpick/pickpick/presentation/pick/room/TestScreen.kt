@@ -1,4 +1,4 @@
-package com.pickpick.pickpick.presentation.room
+package com.pickpick.pickpick.presentation.pick.room
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border

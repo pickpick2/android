@@ -1,11 +1,11 @@
-package com.pickpick.pickpick.presentation.room
+package com.pickpick.pickpick.presentation.pick.room
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.pickpick.pickpick.presentation.room.component.RoomMemberItem
+import com.pickpick.pickpick.presentation.pick.room.component.RoomMemberItem
 import androidx.compose.ui.res.stringResource
 import com.pickpick.pickpick.R
 import com.pickpick.pickpick.core.ui.component.BackLayout
