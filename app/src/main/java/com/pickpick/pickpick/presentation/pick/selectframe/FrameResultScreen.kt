@@ -81,7 +81,7 @@ fun FrameResultScreen(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            TimerText(time = timerState.remainingSeconds)
+            TimerText(time = timerState.remainingSeconds, textResId = R.string.auto_progress_timer)
 
             Spacer(modifier = Modifier.height(40.dp))
 

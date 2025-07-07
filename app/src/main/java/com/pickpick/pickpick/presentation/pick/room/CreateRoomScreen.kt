@@ -90,7 +90,8 @@ fun CreateRoomScreen(
 
             MainButton(
                 text = stringResource(R.string.create_room),
-                enabled = uiState.value.enabled,
+//                enabled = uiState.value.enabled,
+                enabled = true,
                 onClick = onNavigateToComplete
             )
         }

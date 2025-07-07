@@ -50,7 +50,7 @@ fun NavGraph(
             composable<SplashRoute> {
                 SplashScreen(
                     onNavigateToLogin = {
-                        navController.navigate(PickGraph) {
+                        navController.navigate(MainRoute.StartRoute) {
                             popUpTo(SplashRoute) {
                                 inclusive = true
                             }
