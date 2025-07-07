@@ -10,6 +10,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -25,6 +29,7 @@ import com.pickpick.pickpick.core.ui.component.UnderlineTextField
 import com.pickpick.pickpick.core.ui.theme.Border
 import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicTypography.DetailRegular
 import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicTypography.Heading1
+import com.pickpick.pickpick.presentation.album.component.CustomDropdown
 import com.pickpick.pickpick.presentation.room.viewmodel.RoomViewModel
 
 @Composable
@@ -68,7 +73,18 @@ fun CreateRoomScreen(
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             )
 
+            Spacer(modifier = Modifier.height(20.dp))
+
             // TODO: 인원 선택 추가
+            var selectedPeople by remember { mutableStateOf("인원 선택") }
+            val options = listOf("1명", "2명", "3명", "4명", "5명", "6명")
+
+            CustomDropdown(
+                selectedOption = selectedPeople,
+                options = options,
+                onOptionSelected = { selectedPeople = it },
+                icon = R.drawable.icon_people
+            )
 
             Spacer(modifier = Modifier.height(70.dp))
 

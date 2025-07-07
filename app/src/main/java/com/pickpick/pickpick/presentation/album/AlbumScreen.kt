@@ -5,11 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,7 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.pickpick.pickpick.R
 import com.pickpick.pickpick.core.ui.component.BackLayout
 import com.pickpick.pickpick.presentation.album.component.SearchBar
-import com.pickpick.pickpick.presentation.album.component.SortDropdown
+import com.pickpick.pickpick.presentation.album.component.CustomDropdown
 import kotlin.collections.chunked
 import kotlin.collections.forEach
 
@@ -73,7 +70,7 @@ fun AlbumScreen(
                 Spacer(modifier = Modifier.width(10.dp))
 
                 // 정렬 드롭다운
-                SortDropdown(
+                CustomDropdown(
                     modifier = Modifier.weight(1f),
                     selectedOption = selectedSort,
                     options = sortOptions,

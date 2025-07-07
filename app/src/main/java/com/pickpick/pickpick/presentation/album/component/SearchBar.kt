@@ -20,7 +20,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.pickpick.pickpick.R
 import com.pickpick.pickpick.core.ui.theme.Black
 import com.pickpick.pickpick.core.ui.theme.Border
@@ -29,10 +28,10 @@ import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicTypography.DetailRe
 
 @Composable
 fun SearchBar(
+    modifier: Modifier = Modifier,
     query: String,
     onQueryChanged: (String) -> Unit,
-    onSearch: () -> Unit,
-    modifier: Modifier = Modifier
+    onSearch: () -> Unit
 ) {
     Box(
         modifier = modifier

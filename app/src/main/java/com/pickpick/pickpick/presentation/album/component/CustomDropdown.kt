@@ -1,5 +1,6 @@
 package com.pickpick.pickpick.presentation.album.component
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -14,17 +15,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.pickpick.pickpick.R
 import com.pickpick.pickpick.core.ui.theme.Border
 import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicTypography.DetailRegular
 
 @Composable
-fun SortDropdown(
+fun CustomDropdown(
+    modifier: Modifier = Modifier,
     selectedOption: String,
     options: List<String>,
     onOptionSelected: (String) -> Unit,
-    modifier: Modifier = Modifier
+    @DrawableRes icon: Int? = null
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -46,16 +49,25 @@ fun SortDropdown(
                 modifier = Modifier.fillMaxSize()
             ) {
                 // 텍스트 영역
-                Box(
+                Row(
                     modifier = Modifier
                         .weight(1f)
                         .fillMaxHeight()
                         .padding(start = 12.dp),
-                    contentAlignment = Alignment.CenterStart
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
+                    icon?.let {
+                        Image(
+                            painter = painterResource(icon),
+                            contentDescription = null
+                        )
+                    }
+
                     Text(
+                        modifier = Modifier.weight(1f),
                         text = selectedOption,
-                        style = DetailRegular.copy(color = Border)
+                        style = DetailRegular.copy(color = Border),
+                        textAlign = TextAlign.Center
                     )
                 }
 
