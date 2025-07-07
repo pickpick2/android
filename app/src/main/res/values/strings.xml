@@ -18,6 +18,7 @@
     <string name="nickname_placeholder">닉네임을 입력해주세요.</string>
     <string name="create_room_name_placeholder">방 제목</string>
     <string name="create_room_people_placeholder">인원 선택</string>
+    <string name="album_search_placeholder">제목</string>
 
     <!-- Account Recovery -->
     <string name="find_email">아이디 찾기</string>
