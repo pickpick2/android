@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "com.pickpick.pickpick"
-        minSdk = 24
+        minSdk = 25
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -73,6 +73,7 @@ dependencies {
 
     // Hilt
     implementation(libs.hilt.android)
+    implementation(libs.androidx.compose.material)
     ksp(libs.hilt.compiler)
 
     implementation(libs.hilt.navigation.compose)
@@ -94,6 +95,16 @@ dependencies {
 
     // Kakao
     implementation(libs.kakao.user)
+
+    // CameraX
+    implementation(libs.androidx.camera.core)
+    implementation(libs.androidx.camera.camera2)
+    implementation(libs.androidx.camera.lifecycle)
+    implementation(libs.androidx.camera.view)
+
+    // 권한 처리
+    implementation(libs.accompanist.permissions)
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
