@@ -38,3 +38,30 @@ sealed class AuthRoute {
     data object CompleteRoute : AuthRoute()
 
 }
+
+
+@Serializable
+data object PickGraph
+
+@Serializable
+sealed class PickRoute {
+
+    @Serializable
+    data object SelectBackgroundRoute : PickRoute()
+
+    @Serializable
+    data object BackgroundResultRoute : PickRoute()
+
+    @Serializable
+    data object SelectSlotRoute : PickRoute()
+
+    @Serializable
+    data object TakePictureRoute : PickRoute()
+
+    @Serializable
+    data object PictureResultRoute : PickRoute()
+
+    @Serializable
+    data object PictureDecorateRoute : PickRoute()
+
+}
