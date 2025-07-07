@@ -1,6 +1,5 @@
 package com.pickpick.pickpick.presentation.navigation
 
-
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -33,8 +32,7 @@ import com.pickpick.pickpick.presentation.pick.selectframe.FrameResultScreen
 import com.pickpick.pickpick.presentation.pick.selectframe.SelectFrameScreen
 import com.pickpick.pickpick.presentation.pick.selectslot.SelectSlotScreen
 import com.pickpick.pickpick.presentation.pick.takepicture.TakePictureScreen
-import com.pickpick.pickpick.presentation.splash.SplashScreen
-
+import com.pickpick.pickpick.presentation.SplashScreen
 
 @Composable
 fun NavGraph(
@@ -238,9 +236,9 @@ fun NavGraphBuilder.pickGraph(
 //                    navHostController.navigate(PickRoute.PictureDecorateRoute)
                 })
         }
-//        composable<PickRoute.PictureDecorateRoute> { backStackEntry ->
+        composable<PickRoute.PictureDecorateRoute> { backStackEntry ->
 //            DrawingScreen()
-//        }
+        }
     }
 }
 
