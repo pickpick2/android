@@ -21,6 +21,7 @@ import com.pickpick.pickpick.core.ui.component.ParticipationAppBar
 import com.pickpick.pickpick.core.ui.component.timer.TimerText
 import com.pickpick.pickpick.core.ui.component.timer.rememberTimerState
 import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicTypography.Heading1
+import com.pickpick.pickpick.presentation.pick.selectframe.component.FramePicker
 import com.pickpick.pickpick.presentation.pick.selectframe.viewmodel.FrameViewModel
 
 @Composable
@@ -42,8 +43,6 @@ fun SelectFrameScreen(
 
     LaunchedEffect(timerState.isCompleted) {
         if (timerState.isCompleted) {
-            // TODO: 프레임 선택
-
             onNavigateToComplete()
         }
     }
@@ -72,6 +71,11 @@ fun SelectFrameScreen(
             TimerText(time = timerState.remainingSeconds)
 
             Spacer(modifier = Modifier.height(40.dp))
+
+            FramePicker(
+                selectedIndex = uiState.selectedFrameIndex,
+                onSelect = { viewModel.selectFrame(it) }
+            )
         }
 
     }

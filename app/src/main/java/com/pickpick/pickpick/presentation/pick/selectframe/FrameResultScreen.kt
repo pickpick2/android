@@ -1,19 +1,25 @@
 package com.pickpick.pickpick.presentation.pick.selectframe
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.pickpick.pickpick.R
 import com.pickpick.pickpick.core.ui.component.ParticipationAppBar
 import com.pickpick.pickpick.core.ui.component.timer.TimerText
@@ -34,6 +40,17 @@ fun FrameResultScreen(
 
     val timerState = rememberTimerState(
         initialSeconds = 3, autoStart = true
+    )
+
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    val selectedIndex = uiState.selectedFrameIndex
+
+    val frameList = listOf(
+        R.drawable.frame_1,
+        R.drawable.frame_2,
+        R.drawable.frame_3,
+        R.drawable.frame_4
     )
 
     LaunchedEffect(timerState.isCompleted) {
@@ -68,6 +85,14 @@ fun FrameResultScreen(
 
             Spacer(modifier = Modifier.height(40.dp))
 
+            Image(
+                painter = painterResource(id = frameList[selectedIndex ?: 0]),
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                contentScale = ContentScale.FillWidth
+            )
         }
     }
 
