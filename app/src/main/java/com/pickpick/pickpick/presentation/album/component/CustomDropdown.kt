@@ -104,7 +104,7 @@ fun CustomDropdown(
                     text = {
                         Text(
                             text = option,
-                            style = DetailRegular.copy(color = Border)
+                            style = DetailRegular
                         )
                     },
                     onClick = {

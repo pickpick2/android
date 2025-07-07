@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -33,6 +34,7 @@ import com.pickpick.pickpick.presentation.pick.selectframe.SelectFrameScreen
 import com.pickpick.pickpick.presentation.pick.selectslot.SelectSlotScreen
 import com.pickpick.pickpick.presentation.pick.takepicture.TakePictureScreen
 import com.pickpick.pickpick.presentation.SplashScreen
+import com.pickpick.pickpick.presentation.pick.selectframe.viewmodel.FrameViewModel
 
 @Composable
 fun NavGraph(
@@ -190,7 +192,14 @@ fun NavGraphBuilder.pickGraph(
         }
 
         composable<PickRoute.SelectFrameRoute> { backStackEntry ->
+            val pickGraphEntry = remember(backStackEntry) {
+                navHostController.getBackStackEntry<PickRoute.SelectFrameRoute>()
+            }
+
+            val viewModel = hiltViewModel<FrameViewModel>(pickGraphEntry)
+
             SelectFrameScreen(
+                viewModel = viewModel,
                 onNavigateToComplete = {
                     navHostController.navigate(PickRoute.FrameResultRoute)
                 }
@@ -198,7 +207,14 @@ fun NavGraphBuilder.pickGraph(
         }
 
         composable<PickRoute.FrameResultRoute> { backStackEntry ->
+            val pickGraphEntry = remember(backStackEntry) {
+                navHostController.getBackStackEntry<PickRoute.SelectFrameRoute>()
+            }
+
+            val viewModel = hiltViewModel<FrameViewModel>(pickGraphEntry)
+
             FrameResultScreen(
+                viewModel = viewModel,
                 onNavigateToNext = {
                     navHostController.navigate(PickRoute.SelectBackgroundRoute)
                 }

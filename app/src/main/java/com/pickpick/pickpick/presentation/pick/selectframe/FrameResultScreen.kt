@@ -1,5 +1,6 @@
 package com.pickpick.pickpick.presentation.pick.selectframe
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -53,6 +54,8 @@ fun FrameResultScreen(
         R.drawable.frame_4
     )
 
+    Log.d("FrameResultScreen", selectedIndex.toString())
+
     LaunchedEffect(timerState.isCompleted) {
         if (timerState.isCompleted) {
             onNavigateToNext()
@@ -62,7 +65,7 @@ fun FrameResultScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .imePadding(),
+            .imePadding()
     ) {
         ParticipationAppBar(
             profileImages = profileImages
@@ -71,7 +74,7 @@ fun FrameResultScreen(
         Column(
             modifier = modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp, vertical = 32.dp),
+                .padding(horizontal = 16.dp, vertical = 32.dp)
         ) {
 
             Text(
@@ -83,7 +86,7 @@ fun FrameResultScreen(
 
             TimerText(time = timerState.remainingSeconds, textResId = R.string.auto_progress_timer)
 
-            Spacer(modifier = Modifier.height(40.dp))
+            Spacer(modifier = Modifier.height(100.dp))
 
             Image(
                 painter = painterResource(id = frameList[selectedIndex ?: 0]),

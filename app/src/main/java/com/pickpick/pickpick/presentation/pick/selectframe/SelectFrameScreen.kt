@@ -74,7 +74,9 @@ fun SelectFrameScreen(
 
             FramePicker(
                 selectedIndex = uiState.selectedFrameIndex,
-                onSelect = { viewModel.selectFrame(it) }
+                onSelect = {
+                    viewModel.selectFrame(it)
+                }
             )
         }
 

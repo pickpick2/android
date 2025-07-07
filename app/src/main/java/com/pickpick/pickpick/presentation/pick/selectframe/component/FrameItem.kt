@@ -5,11 +5,10 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -46,7 +45,7 @@ fun FrameItem(
         Box(
             modifier = Modifier
                 .clickable { onSelect(index) }
-                .wrapContentSize()
+                .fillMaxWidth()
         ) {
             Box(
                 modifier = Modifier
@@ -59,7 +58,10 @@ fun FrameItem(
                 Image(
                     painter = painterResource(id = frameRes),
                     contentDescription = null,
-                    contentScale = ContentScale.FillBounds
+                    contentScale = ContentScale.Inside,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .defaultMinSize(minHeight = 120.dp)
                 )
             }
 
