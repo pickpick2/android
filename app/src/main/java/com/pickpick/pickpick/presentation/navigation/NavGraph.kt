@@ -19,6 +19,9 @@ import com.pickpick.pickpick.presentation.auth.resetpw.ResetPWScreen
 import com.pickpick.pickpick.presentation.auth.signup.SignUpScreen
 import com.pickpick.pickpick.presentation.auth.signup.viewmodel.SignUpViewModel
 import com.pickpick.pickpick.presentation.auth.start.StartScreen
+import com.pickpick.pickpick.presentation.info.InfoScreen
+import com.pickpick.pickpick.presentation.info.viewmodel.InfoViewModel
+import com.pickpick.pickpick.presentation.main.MainScreen
 import com.pickpick.pickpick.presentation.pick.backgroundresult.BackgroundResultScreen
 import com.pickpick.pickpick.presentation.pick.captureresult.CaptureResultScreen
 import com.pickpick.pickpick.presentation.pick.imagedecorator.DrawingScreen
@@ -26,13 +29,7 @@ import com.pickpick.pickpick.presentation.pick.selectbackground.SelectBackground
 import com.pickpick.pickpick.presentation.pick.selectslot.SelectSlotScreen
 import com.pickpick.pickpick.presentation.pick.takepicture.TakePictureScreen
 import com.pickpick.pickpick.presentation.splash.SplashScreen
-import com.pickpick.pickpick.presentation.info.InfoScreen
-import com.pickpick.pickpick.presentation.info.viewmodel.InfoViewModel
-import com.pickpick.pickpick.presentation.main.MainScreen
-import com.pickpick.pickpick.presentation.policy.PolicyScreen
-import com.pickpick.pickpick.presentation.signup.SignUpScreen
-import com.pickpick.pickpick.presentation.signup.viewmodel.SignUpViewModel
-import com.pickpick.pickpick.presentation.start.StartScreen
+
 
 @Composable
 fun NavGraph(
