@@ -26,6 +26,13 @@ import com.pickpick.pickpick.presentation.pick.selectbackground.SelectBackground
 import com.pickpick.pickpick.presentation.pick.selectslot.SelectSlotScreen
 import com.pickpick.pickpick.presentation.pick.takepicture.TakePictureScreen
 import com.pickpick.pickpick.presentation.splash.SplashScreen
+import com.pickpick.pickpick.presentation.info.InfoScreen
+import com.pickpick.pickpick.presentation.info.viewmodel.InfoViewModel
+import com.pickpick.pickpick.presentation.main.MainScreen
+import com.pickpick.pickpick.presentation.policy.PolicyScreen
+import com.pickpick.pickpick.presentation.signup.SignUpScreen
+import com.pickpick.pickpick.presentation.signup.viewmodel.SignUpViewModel
+import com.pickpick.pickpick.presentation.start.StartScreen
 
 @Composable
 fun NavGraph(
@@ -56,6 +63,11 @@ fun NavGraph(
 
             // 픽픽 그래프
             pickGraph(navController, onPickComplete = {})
+            // 정보 입력 그래프
+            infoGraph(navController, onInfoComplete = {})
+
+            // 메인 그래프
+            mainGraph(navController)
         }
 
 
@@ -186,4 +198,48 @@ fun NavGraphBuilder.pickGraph(
             DrawingScreen()
         }
     }
+}
+
+fun NavGraphBuilder.infoGraph(
+    navHostController: NavHostController,
+    onInfoComplete: () -> Unit,
+) {
+
+    navigation<InfoGraph>(
+        startDestination = InfoRoute.ProfileRoute
+    ) {
+        composable<InfoRoute.ProfileRoute> { backStackEntry ->
+            val infoGraphEntry = remember(backStackEntry) {
+                navHostController.getBackStackEntry<InfoRoute.ProfileRoute>()
+            }
+            val viewModel = hiltViewModel<InfoViewModel>(infoGraphEntry)
+
+            InfoScreen(
+                viewModel = viewModel,
+                onNavigateToComplete = onInfoComplete
+            )
+        }
+
+        composable<InfoRoute.CompleteRoute> { backStackEntry ->
+
+        }
+    }
+
+}
+
+fun NavGraphBuilder.mainGraph(
+    navHostController: NavHostController,
+) {
+
+    navigation<MainGraph>(
+        startDestination = MainRoute.StartRoute
+    ) {
+        composable<MainRoute.StartRoute> { backStackEntry ->
+            MainScreen(
+                onCameraClick = {},
+                onGalleryClick = {}
+            )
+        }
+    }
+
 }
