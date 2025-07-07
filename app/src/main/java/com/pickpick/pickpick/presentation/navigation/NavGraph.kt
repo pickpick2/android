@@ -1,26 +1,34 @@
 package com.pickpick.pickpick.presentation.navigation
 
+
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
-import com.pickpick.pickpick.presentation.login.LoginScreen
-
-
-import androidx.compose.material3.*
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.pickpick.pickpick.presentation.auth.complete.CompleteScreen
+import com.pickpick.pickpick.presentation.auth.findemail.FindEmailScreen
+import com.pickpick.pickpick.presentation.auth.findpassword.FindPasswordScreen
+import com.pickpick.pickpick.presentation.auth.login.LoginScreen
+import com.pickpick.pickpick.presentation.auth.policy.PolicyScreen
+import com.pickpick.pickpick.presentation.auth.resetpw.ResetPWScreen
+import com.pickpick.pickpick.presentation.auth.signup.SignUpScreen
+import com.pickpick.pickpick.presentation.auth.signup.viewmodel.SignUpViewModel
+import com.pickpick.pickpick.presentation.auth.start.StartScreen
 import com.pickpick.pickpick.presentation.info.InfoScreen
 import com.pickpick.pickpick.presentation.info.viewmodel.InfoViewModel
 import com.pickpick.pickpick.presentation.main.MainScreen
-import com.pickpick.pickpick.presentation.policy.PolicyScreen
-import com.pickpick.pickpick.presentation.signup.SignUpScreen
-import com.pickpick.pickpick.presentation.signup.viewmodel.SignUpViewModel
-import com.pickpick.pickpick.presentation.start.StartScreen
+import com.pickpick.pickpick.presentation.pick.backgroundresult.BackgroundResultScreen
+import com.pickpick.pickpick.presentation.pick.captureresult.CaptureResultScreen
+import com.pickpick.pickpick.presentation.pick.selectbackground.SelectBackgroundScreen
+import com.pickpick.pickpick.presentation.pick.selectslot.SelectSlotScreen
+import com.pickpick.pickpick.presentation.pick.takepicture.TakePictureScreen
+import com.pickpick.pickpick.presentation.splash.SplashScreen
+
 
 @Composable
 fun NavGraph(
@@ -36,15 +44,21 @@ fun NavGraph(
             modifier = modifier,
         ) {
             composable<SplashRoute> {
-                LaunchedEffect(Unit) {
-                    navController.navigate(AuthGraph)
-                }
-                Text("Splash")
+                SplashScreen(
+                    onNavigateToLogin = {
+                        navController.navigate(PickGraph) {
+                            popUpTo(SplashRoute) {
+                                inclusive = true
+                            }
+                        }
+                    })
             }
 
             // 인증 관련 그래프 (로그인, 회원가입 등)
             authGraph(navController, onAuthComplete = {})
 
+            // 픽픽 그래프
+            pickGraph(navController, onPickComplete = {})
             // 정보 입력 그래프
             infoGraph(navController, onInfoComplete = {})
 
@@ -78,8 +92,27 @@ fun NavGraphBuilder.authGraph(
             )
         }
         composable<AuthRoute.FindEmailRoute> { backStackEntry ->
+            FindEmailScreen(
+                onNavigateToLogin = {
+                    navHostController.navigate(AuthRoute.LoginRoute) {
+                        popUpTo(AuthRoute.LoginRoute) {
+                            inclusive = true
+                        }
+                    }
+                },
+                onNavigateToPassword = { navHostController.navigate(AuthRoute.FindPasswordRoute) },
+            )
         }
         composable<AuthRoute.FindPasswordRoute> { backStackEntry ->
+            FindPasswordScreen(
+                onNavigateToResetPW = { navHostController.navigate(AuthRoute.ResetPasswordRoute) },
+                onNavigateToEmail = {
+                    navHostController.navigate(AuthRoute.FindEmailRoute) {
+                        popUpTo(AuthRoute.FindEmailRoute) {
+                            inclusive = true
+                        }
+                    }
+                })
         }
         composable<AuthRoute.SignUpRoute> { backStackEntry ->
             // ✅ 중첩 그래프 레벨에서 ViewModel 생성 (AuthGraph 스코프)
@@ -101,10 +134,65 @@ fun NavGraphBuilder.authGraph(
             PolicyScreen(
                 viewModel = viewModel, onNavigateToSignUp = { navHostController.popBackStack() })
         }
-        composable<AuthRoute.UpdatePasswordRoute> { backStackEntry ->
+        composable<AuthRoute.ResetPasswordRoute> { backStackEntry ->
+            ResetPWScreen(
+                onNavigateToComplete = { navHostController.navigate(AuthRoute.CompleteRoute) })
         }
         composable<AuthRoute.CompleteRoute> { backStackEntry ->
+            CompleteScreen(
+                onNavigateToLogin = {
+                    navHostController.navigate(AuthRoute.LoginRoute) {
+                        popUpTo(AuthRoute.LoginRoute) {
+                            inclusive = true
+                        }
+                    }
+                })
         }
+    }
+}
+
+
+fun NavGraphBuilder.pickGraph(
+    navHostController: NavHostController,
+    onPickComplete: () -> Unit,
+) {
+    navigation<PickGraph>(
+        startDestination = PickRoute.PictureDecorateRoute
+    ) {
+        composable<PickRoute.SelectBackgroundRoute> { backStackEntry ->
+            SelectBackgroundScreen(
+                onNavigateToResult = {
+                    navHostController.navigate(PickRoute.BackgroundResultRoute)
+                })
+        }
+        composable<PickRoute.BackgroundResultRoute> { backStackEntry ->
+            BackgroundResultScreen(
+                onNavigateToSlot = {
+                    navHostController.navigate(PickRoute.SelectSlotRoute)
+                })
+        }
+        composable<PickRoute.SelectSlotRoute> { backStackEntry ->
+            SelectSlotScreen(
+                onNavigateToPicture = {
+                    navHostController.navigate(PickRoute.TakePictureRoute)
+                })
+        }
+        composable<PickRoute.TakePictureRoute> { backStackEntry ->
+            TakePictureScreen(
+                onNavigateToResult = {
+                    navHostController.navigate(PickRoute.PictureResultRoute)
+                })
+        }
+
+        composable<PickRoute.PictureResultRoute> { backStackEntry ->
+            CaptureResultScreen(
+                onNavigateToDecorate = {
+//                    navHostController.navigate(PickRoute.PictureDecorateRoute)
+                })
+        }
+//        composable<PickRoute.PictureDecorateRoute> { backStackEntry ->
+//            DrawingScreen()
+//        }
     }
 }
 

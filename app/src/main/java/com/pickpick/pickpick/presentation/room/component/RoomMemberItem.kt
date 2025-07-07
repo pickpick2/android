@@ -36,6 +36,8 @@ import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicTypography.Body2Bol
 fun RoomMemberItem(
     modifier: Modifier = Modifier
 ) {
+
+    // TODO: 준비 상태인 경우에만 visible
     Box(
         modifier = Modifier
             .fillMaxWidth()
