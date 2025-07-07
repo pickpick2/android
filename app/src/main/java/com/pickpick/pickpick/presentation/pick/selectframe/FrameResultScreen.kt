@@ -94,7 +94,7 @@ fun FrameResultScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
-                contentScale = ContentScale.FillWidth
+                contentScale = ContentScale.Inside
             )
         }
     }

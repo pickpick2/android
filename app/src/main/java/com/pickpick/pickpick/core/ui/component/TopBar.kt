@@ -33,7 +33,6 @@ fun CommonBackTopBar(
 ) {
     Box(
         modifier = modifier
-            .background(White)
             .fillMaxWidth()
             .height(48.dp)
             .padding(start = 16.dp, end = 16.dp)
