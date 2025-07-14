@@ -21,8 +21,7 @@ class AlbumPagingSource(
             val response = api.getAlbums(
                 search = search,
                 cursor = cursor,
-                size = size,
-                page = page
+                size = size
             )
 
             val photos = response.getOrThrow { it.map { dto -> dto.toDomain() } }
