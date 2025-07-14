@@ -41,7 +41,7 @@ fun AlbumScreen(
         onBackClick = onBackClick
     ) {
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {

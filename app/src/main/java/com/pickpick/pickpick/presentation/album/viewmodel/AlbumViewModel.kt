@@ -22,9 +22,13 @@ class AlbumViewModel @Inject constructor(
         _uiState.update(block)
     }
 
-    fun fetchAlbums() {
+    fun fetchAlbums(
+        query: String?,
+        cursor: String?,
+        size: Int
+    ) {
         viewModelScope.launch {
-            val result = getAlbumsUseCase()
+            val result = getAlbumsUseCase(query, cursor, size)
             updateState { it.copy(albumResult = result.toResultState()) }
         }
     }

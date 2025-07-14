@@ -8,7 +8,11 @@ import javax.inject.Inject
 class GetAlbumsUseCase @Inject constructor(
     private val repository: AlbumRepository
 ) {
-    suspend operator fun invoke(): ApiResult<List<Photo>> {
-        return repository.getAlbums()
+    suspend operator fun invoke(
+        query: String?,
+        cursor: String?,
+        size: Int
+    ): ApiResult<List<Photo>> {
+        return repository.getAlbums(query, cursor, size)
     }
 }

@@ -10,7 +10,11 @@ import retrofit2.http.Query
 interface AlbumApi {
 
     @GET("albums")
-    suspend fun getAlbums(@Query("search") search: String, @Query("cursor") cursor: String, @Query("size") size: Int): BaseResponse<List<PhotoResponse>>
+    suspend fun getAlbums(
+        @Query("search") search: String? = null,
+        @Query("cursor") cursor: String? = null,
+        @Query("size") size: Int = 20
+    ): BaseResponse<List<PhotoResponse>>
 
     @GET("albums/{albumId}")
     suspend fun getPhoto(@Path("albumId") albumId: String): BaseResponse<PhotoResponse>
