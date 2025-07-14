@@ -13,6 +13,7 @@ interface AlbumApi {
     suspend fun getAlbums(
         @Query("search") search: String? = null,
         @Query("cursor") cursor: String? = null,
+        @Query("page") page: Int,
         @Query("size") size: Int = 20
     ): BaseResponse<List<PhotoResponse>>
 

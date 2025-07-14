@@ -1,6 +1,7 @@
 package com.pickpick.pickpick.presentation.album.viewmodel
 
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import com.pickpick.pickpick.core.presentation.BaseViewModel
 import com.pickpick.pickpick.core.result.toResultState
 import com.pickpick.pickpick.domain.album.usecase.DeletePhotoUseCase
@@ -22,14 +23,15 @@ class AlbumViewModel @Inject constructor(
         _uiState.update(block)
     }
 
-    fun fetchAlbums(
-        query: String?,
-        cursor: String?,
-        size: Int
+    fun loadPagedPhotos(
+        query: String? = null,
+        cursor: String? = null
     ) {
-        viewModelScope.launch {
-            val result = getAlbumsUseCase(query, cursor, size)
-            updateState { it.copy(albumResult = result.toResultState()) }
+        val flow = getAlbumsUseCase(query, cursor)
+            .cachedIn(viewModelScope)
+
+        _uiState.update {
+            it.copy(pagedPhotos = flow)
         }
     }
 

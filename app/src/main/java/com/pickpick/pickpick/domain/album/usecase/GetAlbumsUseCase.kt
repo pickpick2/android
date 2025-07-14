@@ -1,18 +1,23 @@
 package com.pickpick.pickpick.domain.album.usecase
 
-import com.pickpick.pickpick.core.result.ApiResult
+import androidx.paging.PagingData
 import com.pickpick.pickpick.domain.album.model.Photo
 import com.pickpick.pickpick.domain.album.repository.AlbumRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetAlbumsUseCase @Inject constructor(
     private val repository: AlbumRepository
 ) {
-    suspend operator fun invoke(
-        query: String?,
+    operator fun invoke(
+        search: String?,
         cursor: String?,
-        size: Int
-    ): ApiResult<List<Photo>> {
-        return repository.getAlbums(query, cursor, size)
+        size: Int = 20
+    ): Flow<PagingData<Photo>> {
+        return repository.getPagedAlbums(
+            search = search,
+            cursor = cursor,
+            size = size
+        )
     }
 }
