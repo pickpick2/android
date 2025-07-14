@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.pickpick.pickpick.R
+import com.pickpick.pickpick.core.ui.theme.clickableNoRipple
 import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicFallback
 import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicTypography.DetailBold
 import com.pickpick.pickpick.domain.album.model.Photo
@@ -29,7 +30,8 @@ import com.pickpick.pickpick.domain.album.model.Photo
 @Composable
 fun AlbumItem(
     modifier: Modifier = Modifier,
-    photo: Photo = Photo()
+    photo: Photo = Photo(),
+    onDeleteClick: () -> Unit
 ) {
 
     Column(
@@ -61,11 +63,13 @@ fun AlbumItem(
 
                 Spacer(modifier = Modifier.width(4.dp))
 
-                // TODO: 클릭 시 삭제 다이얼로그
+                // 앨범 삭제
                 Image(
                     painter = painterResource(id = R.drawable.icon_trash),
                     contentDescription = null,
-                    modifier = Modifier.size(16.dp)
+                    modifier = Modifier
+                        .size(16.dp)
+                        .clickableNoRipple(onDeleteClick)
                 )
             }
 
@@ -94,5 +98,5 @@ fun AlbumItem(
 @Composable
 @Preview(showBackground = true)
 fun AlbumItemPreview() {
-    AlbumItem()
+    AlbumItem(onDeleteClick = {})
 }

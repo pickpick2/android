@@ -32,6 +32,7 @@ import com.pickpick.pickpick.R
 import com.pickpick.pickpick.core.ui.component.BackLayout
 import com.pickpick.pickpick.presentation.album.component.SearchBar
 import com.pickpick.pickpick.presentation.album.component.CustomDropdown
+import com.pickpick.pickpick.presentation.album.component.DeletePhotoDialog
 
 @Composable
 fun AlbumScreen(
@@ -42,6 +43,23 @@ fun AlbumScreen(
 
     val uiState by viewModel.uiState.collectAsState()
     val albums = uiState.pagedPhotos.collectAsLazyPagingItems()
+
+    var showDialog by remember { mutableStateOf(false) }
+    var selectedPhotoId by remember { mutableStateOf<String>("") }
+
+    if (showDialog && selectedPhotoId.isNotEmpty()) {
+        DeletePhotoDialog(
+            onDismiss = {
+                showDialog = false
+                selectedPhotoId = ""
+            },
+            onDelete = {
+                viewModel.removePhoto(selectedPhotoId)
+                showDialog = false
+                selectedPhotoId = ""
+            }
+        )
+    }
 
     LaunchedEffect(Unit) {
         viewModel.loadPagedPhotos()
@@ -101,7 +119,13 @@ fun AlbumScreen(
                 content = {
                     items(albums.itemCount) { index ->
                         albums[index]?.let { photo ->
-                            AlbumItem(photo = photo)
+                            AlbumItem(
+                                photo = photo,
+                                onDeleteClick = {
+                                    selectedPhotoId = photo.photoId
+                                    showDialog = true
+                                }
+                            )
                         }
                     }
 

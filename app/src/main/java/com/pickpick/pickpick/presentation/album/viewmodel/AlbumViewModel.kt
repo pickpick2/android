@@ -45,6 +45,7 @@ class AlbumViewModel @Inject constructor(
     fun removePhoto(albumId: String) {
         viewModelScope.launch {
             deletePhotoUseCase(albumId)
+            loadPagedPhotos() // 삭제 후 갱신
         }
     }
 
