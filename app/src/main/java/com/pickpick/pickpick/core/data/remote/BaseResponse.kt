@@ -1,4 +1,4 @@
-package com.pickpick.pickpick.core.data
+package com.pickpick.pickpick.core.data.remote
 
 import com.pickpick.pickpick.core.exception.GlobalException
 

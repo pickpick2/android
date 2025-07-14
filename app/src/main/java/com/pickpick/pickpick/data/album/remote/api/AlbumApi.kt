@@ -1,6 +1,6 @@
 package com.pickpick.pickpick.data.album.remote.api
 
-import com.pickpick.pickpick.core.data.BaseResponse
+import com.pickpick.pickpick.core.data.remote.BaseResponse
 import com.pickpick.pickpick.data.album.remote.dto.PhotoResponse
 import retrofit2.http.GET
 import retrofit2.http.POST

@@ -1,6 +1,6 @@
 package com.pickpick.pickpick.data.album.remote.repository
 
-import com.pickpick.pickpick.core.data.getOrThrow
+import com.pickpick.pickpick.core.data.remote.getOrThrow
 import com.pickpick.pickpick.core.result.ApiResult
 import com.pickpick.pickpick.core.result.safeApiCall
 import com.pickpick.pickpick.data.album.remote.api.AlbumApi
