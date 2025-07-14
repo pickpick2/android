@@ -12,7 +12,6 @@ import com.pickpick.pickpick.data.album.remote.paging.AlbumPagingSource
 import com.pickpick.pickpick.domain.album.model.Photo
 import com.pickpick.pickpick.domain.album.repository.AlbumRepository
 import kotlinx.coroutines.flow.Flow
-import retrofit2.http.Query
 import javax.inject.Inject
 
 class AlbumRepositoryImpl @Inject constructor(
