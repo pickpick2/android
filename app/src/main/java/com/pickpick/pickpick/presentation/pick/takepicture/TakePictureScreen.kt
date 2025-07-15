@@ -10,9 +10,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.pickpick.pickpick.R
@@ -22,7 +22,8 @@ import com.pickpick.pickpick.core.ui.component.pickpick.slot.SlotAction
 import com.pickpick.pickpick.core.ui.component.pickpick.slot.SlotType
 import com.pickpick.pickpick.core.ui.component.timer.rememberTimerState
 import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicTypography.Heading1
-import com.pickpick.pickpick.presentation.pick.selectslot.ui.SlotGridLayout
+import com.pickpick.pickpick.presentation.pick.selectslot.ui.SlotGridRatioLayout
+import com.pickpick.pickpick.presentation.pick.selectslot.viewmodel.SlotLayout
 import com.pickpick.pickpick.presentation.pick.takepicture.viewmodel.CameraViewModel
 
 @Composable
@@ -38,9 +39,13 @@ fun TakePictureScreen(
     }
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val slotItems = MutableList<SlotType.Camera>(12) {
+
+    // todo dummy data 나중에 삭제 예정
+    val painter = painterResource(id = R.drawable.frame)
+
+    val slotItems = uiState.slotLayouts.map {
         SlotType.Camera(
-            it, it, uiState.selectedSlots.contains(it), uiState.capturedPhotoUri?.toUri()
+            slotLayout = it, null
         )
     }
 
@@ -71,14 +76,19 @@ fun TakePictureScreen(
         )
         Spacer(modifier = modifier.height(10.dp))
 
-        SlotGridLayout(
-            items = slotItems, colCount = 2,
+        SlotGridRatioLayout(
+            slotType = SlotType.Camera(slotLayout = SlotLayout(), null),
+            items = slotItems,
+            painter = painter,
+            setFrameLayout = viewModel::setFrameLayout,
+            setSlotLayouts = viewModel::setSlotLayouts,
+            ratioSlotLayouts = uiState.ratioSlotLayouts,
             onSlotAction = { action ->
                 if (action is SlotAction.CapturePhoto) {
-                    viewModel.capturePhoto(action.uri)
+                    viewModel.capturePhoto(uri = action.uri)
                 }
-            },
-        )
+            })
+
 
     }
 }

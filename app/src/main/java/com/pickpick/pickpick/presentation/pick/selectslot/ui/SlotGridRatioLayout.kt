@@ -1,6 +1,5 @@
 package com.pickpick.pickpick.presentation.pick.selectslot.ui
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -48,7 +47,6 @@ fun SlotGridRatioLayout(
     // imageSize나 imagePosition이 변경될 때만 frameLayout 계산
     LaunchedEffect(imageSize, imagePosition) {
         if (imageSize != Size.Zero) {
-            Log.d("SelectSlotScreen", "setSlotLayout")
             val frameLayout = FrameLayout(
                 x = imagePosition.x,
                 y = imagePosition.y,
@@ -57,7 +55,7 @@ fun SlotGridRatioLayout(
             )
             setFrameLayout(frameLayout)
 
-            // 🔥 슬롯 레이아웃 계산도 여기서
+            // 슬롯 레이아웃 계산
             val slotLayouts = SlotLayoutUtil.getSlotLayoutInfo(
                 density = density, frameLayout = frameLayout, slotLayouts = ratioSlotLayouts
             )
@@ -115,39 +113,13 @@ fun SlotGridRatioLayout(
             }
 
             is SlotType.Camera -> {
-                // 행 단위로 분할
-//            val rows = items.chunked(colCount)
-//            // Column으로 한 이유
-//            // Lazy로 하면 Camera가 안보일 경우 해당 컴포저블의 리소스를 해제하기 때문에
-//            // 카메라도 같이 해제되어 다시 렌더링 할 때 불필요한 재시작 및 딜레이가 발생하여 Column으로 선택하였습니다!
-//            Column(
-//                modifier = modifier
-//                    .fillMaxSize()
-//                    .verticalScroll(rememberScrollState())
-//                    .padding(26.dp), verticalArrangement = Arrangement.spacedBy(10.dp)
-//            ) {
-//                rows.forEach { rowItems ->
-//                    Row(
-//                        modifier = Modifier.fillMaxWidth(),
-//                        horizontalArrangement = Arrangement.spacedBy(10.dp)
-//                    ) {
-//                        rowItems.forEach { item ->
-//                            SlotItem(
-//                                modifier = Modifier
-//                                    .weight(1f)
-//                                    .aspectRatio(1f),
-//                                slotType = item,
-//                                onSlotAction = onSlotAction
-//                            )
-//                        }
-//
-//                        // 마지막 행이 colCount보다 적을 때 빈 공간 채우기
-//                        repeat(colCount - rowItems.size) {
-//                            Spacer(modifier = Modifier.weight(1f))
-//                        }
-//                    }
-//                }
-//            }
+                repeat(items.size) { index ->
+                    SlotItem(
+                        modifier = modifier,
+                        slotType = items[index],
+                        onSlotAction = onSlotAction,
+                    )
+                }
             }
         }
 

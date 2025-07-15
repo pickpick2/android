@@ -42,6 +42,7 @@ fun SelectSlotScreen(
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    // todo dummy data 나중에 삭제 예정
     val painter = painterResource(id = R.drawable.frame)
 
     val slotItems = uiState.slotLayouts.map {
@@ -54,7 +55,7 @@ fun SelectSlotScreen(
     var timerState = rememberTimerState(initialSeconds = 20)
     LaunchedEffect(timerState.isCompleted) {
         if (timerState.isCompleted) {
-//            onNavigateToPicture()
+            onNavigateToPicture()
         }
     }
 
