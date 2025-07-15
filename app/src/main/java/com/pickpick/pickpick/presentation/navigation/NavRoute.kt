@@ -64,6 +64,18 @@ sealed class PickRoute {
     @Serializable
     data object PictureDecorateRoute : PickRoute()
 
+    @Serializable
+    data object CreateRoomRoute : PickRoute()
+
+    @Serializable
+    data object ReadyRoute : PickRoute()
+
+    @Serializable
+    data object SelectFrameRoute : PickRoute()
+
+    @Serializable
+    data object FrameResultRoute : PickRoute()
+
 }
 
 @Serializable
@@ -89,4 +101,13 @@ sealed class MainRoute {
     @Serializable
     data object StartRoute : MainRoute()
 
+}
+
+@Serializable
+data object AlbumGraph
+
+@Serializable
+sealed class AlbumRoute {
+    @Serializable
+    data object AlbumListRoute : AlbumRoute()
 }
