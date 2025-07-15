@@ -2,6 +2,7 @@ package com.pickpick.pickpick.core.network
 
 import android.content.Context
 import com.pickpick.pickpick.BuildConfig
+import com.pickpick.pickpick.core.data.TokenDataStore
 import com.pickpick.pickpick.core.network.interceptor.AuthInterceptor
 import dagger.Module
 import dagger.Provides
@@ -26,7 +27,8 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideAuthInterceptor(
-    ): AuthInterceptor = AuthInterceptor()
+        tokenDataStore: TokenDataStore,
+    ): AuthInterceptor = AuthInterceptor(tokenDataStore)
 
     @Provides
     @Singleton
