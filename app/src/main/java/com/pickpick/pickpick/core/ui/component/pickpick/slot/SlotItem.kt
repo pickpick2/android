@@ -10,9 +10,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -51,11 +49,12 @@ import com.pickpick.pickpick.core.ui.component.pickpick.SelectedUser
 import com.pickpick.pickpick.core.ui.theme.Border
 import com.pickpick.pickpick.core.ui.theme.PrimaryDefault
 import com.pickpick.pickpick.core.ui.theme.PrimaryLight
+import com.pickpick.pickpick.core.ui.theme.PrimaryLighter
 import com.pickpick.pickpick.core.ui.theme.SecondaryDefault
 import com.pickpick.pickpick.core.ui.theme.White
 import com.pickpick.pickpick.core.ui.theme.clickableNoRipple
 import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicTypography.DetailRegular
-import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicTypography.Heading1
+import com.pickpick.pickpick.presentation.pick.selectslot.viewmodel.SlotLayout
 import com.pickpick.pickpick.presentation.pick.takepicture.ui.CameraPreview
 import com.pickpick.pickpick.presentation.pick.takepicture.ui.capturePhoto
 import kotlinx.coroutines.launch
@@ -93,24 +92,27 @@ fun PositionSlotItem(
     Box {
         Box(
             modifier = modifier
-                .fillMaxWidth()
-                .aspectRatio(1f)
+                .size(
+                    slotData.slotLayout.width.dp, slotData.slotLayout.height.dp
+                )
+                .offset(
+                    slotData.slotLayout.x.dp, slotData.slotLayout.y.dp
+                )
                 .clickableNoRipple {
-                    onSelect(slotData.index)
+                    onSelect(slotData.slotLayout.index)
                 }
                 .border(
-                    width = 1.dp,
-                    color = if (slotData.isSelected) PrimaryLight else Border,
+                    width = 3.dp,
+                    color = if (slotData.isSelected) PrimaryLight else PrimaryLighter,
                     shape = RoundedCornerShape(5.dp)
-                )) {
-            Text(text = slotData.item.toString(), style = Heading1)
-        }
+                ),
+        )
         if (slotData.isSelected) Box(
-            modifier = modifier
-                .align(if (slotData.index % 2 == 0) Alignment.TopStart else Alignment.TopEnd)
-                .offset(
-                    x = if (slotData.index % 2 == 0) -15.dp else 15.dp, y = -15.dp
-                )
+            modifier = modifier.offset(
+                x = if (slotData.isLeftPosition) slotData.slotLayout.x.dp - 15.dp
+                else slotData.slotLayout.x.dp + slotData.slotLayout.width.dp - 15.dp,
+                y = slotData.slotLayout.y.dp - 15.dp
+            )
         ) {
             SelectedUser(
                 imageUrl = "https://i.guim.co.uk/img/media/327aa3f0c3b8e40ab03b4ae80319064e401c6fbc/377_133_3542_2834/master/3542.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=34d32522f47e4a67286f9894fc81c863"
@@ -157,7 +159,7 @@ fun CameraSlot(
         ) {
 
             // todo 본인 id와 매칭 수정
-            if (slotData.index == 0) {
+            if (slotData.slotLayout.index == 0) {
                 when {
                     // 촬영된 이미지가 있으면 이미지 표시
                     slotData.uri != null -> {
@@ -222,7 +224,7 @@ fun CameraSlot(
                                             // todo 콜백으로 변경 시간초과 될 경우 자동 촬영 기능
                                             val uri = capturePhoto(capture, context)
                                             if (uri != null) {
-                                                onCapture(slotData.index, uri)
+                                                onCapture(slotData.slotLayout.index, uri)
                                             }
                                         } finally {
                                             isCapturing = false
@@ -241,9 +243,9 @@ fun CameraSlot(
         if (slotData.isSelected) {
             Box(
                 modifier = modifier
-                    .align(if (slotData.index % 2 == 0) Alignment.TopStart else Alignment.TopEnd)
+                    .align(if (slotData.slotLayout.index % 2 == 0) Alignment.TopStart else Alignment.TopEnd)
                     .offset(
-                        x = if (slotData.index % 2 == 0) -15.dp else 15.dp, y = -15.dp
+                        x = if (slotData.slotLayout.index % 2 == 0) -15.dp else 15.dp, y = -15.dp
                     )
             ) {
                 SelectedUser(
@@ -372,5 +374,6 @@ fun CameraPermissionRationale(
 @Preview(showBackground = true)
 @Composable
 fun CameraSlotPreview() {
-    CameraSlot(slotData = SlotType.Camera(0, 0, false, null), onCapture = { _, _ -> })
+    CameraSlot(
+        slotData = SlotType.Camera(slotLayout = SlotLayout(), uri = null), onCapture = { _, _ -> })
 }
