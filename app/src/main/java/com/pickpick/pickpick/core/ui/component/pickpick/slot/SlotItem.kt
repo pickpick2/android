@@ -80,6 +80,13 @@ fun SlotItem(
                 },
             )
         }
+
+        is SlotType.CameraResult -> {
+            CapturedImageDisplay(
+                slotType = slotType, imageUri = slotType.uri ?: Uri.EMPTY, modifier = modifier
+
+            )
+        }
     }
 }
 
@@ -168,8 +175,8 @@ fun CameraSlot(
                 // 촬영된 이미지가 있으면 이미지 표시
                 slotData.uri != null -> {
                     CapturedImageDisplay(
+                        slotType = slotData,
                         imageUri = slotData.uri,
-                        modifier = Modifier.fillMaxSize(),
                     )
                 }
                 // 카메라 권한이 있을 때
@@ -249,9 +256,23 @@ fun CameraSlot(
 
 @Composable
 fun CapturedImageDisplay(
-    imageUri: Uri, modifier: Modifier = Modifier
+    modifier: Modifier = Modifier, slotType: SlotType, imageUri: Uri
 ) {
-    Box(modifier = modifier) {
+    Box(
+        modifier = modifier
+            .size(
+                slotType.slotLayout.width.dp, slotType.slotLayout.height.dp
+            )
+            .offset(
+                slotType.slotLayout.x.dp, slotType.slotLayout.y.dp
+            )
+            .border(
+                width = 1.dp,
+                color = if (slotType.isSelected) PrimaryLight else PrimaryLighter,
+                shape = RoundedCornerShape(5.dp)
+            )
+            .clip(shape = RoundedCornerShape(5.dp)),
+    ) {
         AsyncImage(
             model = imageUri,
             contentDescription = "Captured Photo",
@@ -261,7 +282,7 @@ fun CapturedImageDisplay(
     }
 }
 
-// ✅ 촬영 버튼 컴포넌트
+// 촬영 버튼 컴포넌트
 @Composable
 fun CaptureButton() {
     Box(
@@ -280,7 +301,7 @@ fun CaptureButton() {
     }
 }
 
-// ✅ 다시 촬영 버튼 컴포넌트
+// 다시 촬영 버튼 컴포넌트
 @Composable
 fun RetakeButton() {
     Box(

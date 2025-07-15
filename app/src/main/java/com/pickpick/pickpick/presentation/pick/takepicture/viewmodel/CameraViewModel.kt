@@ -3,12 +3,14 @@ package com.pickpick.pickpick.presentation.pick.takepicture.viewmodel
 import android.net.Uri
 import android.util.Log
 import androidx.camera.core.ImageCapture
-import com.pickpick.pickpick.FrameLayout
 import com.pickpick.pickpick.core.presentation.BaseViewModel
+import com.pickpick.pickpick.core.ui.component.pickpick.slot.SlotType
+import com.pickpick.pickpick.domain.pick.model.FrameLayout
 import com.pickpick.pickpick.presentation.pick.selectslot.viewmodel.SlotLayout
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
+
 
 @HiltViewModel
 class CameraViewModel @Inject constructor() : BaseViewModel<CameraUiState>(
@@ -31,11 +33,11 @@ class CameraViewModel @Inject constructor() : BaseViewModel<CameraUiState>(
         }
     }
 
-    fun setSlotLayouts(slotLayouts: List<SlotLayout>) {
+    fun setSlotLayouts(slotLayouts: List<SlotType>) {
         // 이전 값과 다를 때만 업데이트
         if (_uiState.value.slotLayouts != slotLayouts) {
             _uiState.update {
-                it.copy(slotLayouts = slotLayouts)
+                it.copy(slotLayouts = slotLayouts as List<SlotType.Camera>)
             }
         }
     }

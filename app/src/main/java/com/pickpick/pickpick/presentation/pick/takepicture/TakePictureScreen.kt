@@ -18,12 +18,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.pickpick.pickpick.R
 import com.pickpick.pickpick.core.ui.component.ParticipationAppBar
 import com.pickpick.pickpick.core.ui.component.pickpick.SlotDescription
+import com.pickpick.pickpick.core.ui.component.pickpick.slot.Slot
 import com.pickpick.pickpick.core.ui.component.pickpick.slot.SlotAction
-import com.pickpick.pickpick.core.ui.component.pickpick.slot.SlotType
 import com.pickpick.pickpick.core.ui.component.timer.rememberTimerState
 import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicTypography.Heading1
 import com.pickpick.pickpick.presentation.pick.selectslot.ui.SlotGridRatioLayout
-import com.pickpick.pickpick.presentation.pick.selectslot.viewmodel.SlotLayout
 import com.pickpick.pickpick.presentation.pick.takepicture.viewmodel.CameraViewModel
 
 @Composable
@@ -43,16 +42,12 @@ fun TakePictureScreen(
     // todo dummy data 나중에 삭제 예정
     val painter = painterResource(id = R.drawable.frame)
 
-    val slotItems = uiState.slotLayouts.map {
-        SlotType.Camera(
-            slotLayout = it, null
-        )
-    }
+    val slotItems = uiState.slotLayouts
 
     var timerState = rememberTimerState(initialSeconds = 20)
     LaunchedEffect(timerState.isCompleted) {
         if (timerState.isCompleted) {
-//            onNavigateToResult()
+            onNavigateToResult()
         }
     }
 
@@ -77,7 +72,7 @@ fun TakePictureScreen(
         Spacer(modifier = modifier.height(10.dp))
 
         SlotGridRatioLayout(
-            slotType = SlotType.Camera(slotLayout = SlotLayout(), null),
+            slotType = Slot.CAMERA,
             items = slotItems,
             painter = painter,
             setFrameLayout = viewModel::setFrameLayout,

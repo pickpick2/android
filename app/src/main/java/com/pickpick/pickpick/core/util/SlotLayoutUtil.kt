@@ -1,7 +1,9 @@
 package com.pickpick.pickpick.core.util
 
 import androidx.compose.ui.unit.Density
-import com.pickpick.pickpick.FrameLayout
+import com.pickpick.pickpick.core.ui.component.pickpick.slot.Slot
+import com.pickpick.pickpick.core.ui.component.pickpick.slot.SlotType
+import com.pickpick.pickpick.domain.pick.model.FrameLayout
 import com.pickpick.pickpick.presentation.pick.selectslot.viewmodel.SlotLayout
 
 /**
@@ -14,10 +16,8 @@ object SlotLayoutUtil {
      * 슬롯 정보: 비율 -> dp 변환
      */
     fun getSlotLayoutInfo(
-        density: Density,
-        frameLayout: FrameLayout,
-        slotLayouts: List<SlotLayout>
-    ): List<SlotLayout> {
+        density: Density, frameLayout: FrameLayout, slotLayouts: List<SlotLayout>, slot: Slot
+    ): List<SlotType> {
         return slotLayouts.map { slotInfo ->
             with(density) {
                 // 이미지 크기를 px -> dp 로 변환
@@ -39,12 +39,25 @@ object SlotLayoutUtil {
                 val slotWidth = imageWidth * slotInfo.width / 100
                 val slotHeight = imageHeight * slotInfo.height / 100
 
-                slotInfo.copy(
+                val slotLayout = slotInfo.copy(
                     x = slotX.value,
                     y = slotY.value,
                     width = slotWidth.value,
                     height = slotHeight.value,
                 )
+                when (slot) {
+                    Slot.POSITION -> {
+                        SlotType.Position(slotLayout = slotLayout)
+                    }
+
+                    Slot.CAMERA -> {
+                        SlotType.Camera(slotLayout = slotLayout, uri = null)
+                    }
+
+                    Slot.CAMERA_RESULT -> {
+                        SlotType.CameraResult(slotLayout = slotLayout, uri = null)
+                    }
+                }
             }
         }
     }

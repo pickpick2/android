@@ -10,6 +10,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.pickpick.pickpick.presentation.SplashScreen
 import com.pickpick.pickpick.presentation.auth.complete.CompleteScreen
 import com.pickpick.pickpick.presentation.auth.findemail.FindEmailScreen
 import com.pickpick.pickpick.presentation.auth.findpassword.FindPasswordScreen
@@ -24,11 +25,9 @@ import com.pickpick.pickpick.presentation.info.viewmodel.InfoViewModel
 import com.pickpick.pickpick.presentation.main.MainScreen
 import com.pickpick.pickpick.presentation.pick.backgroundresult.BackgroundResultScreen
 import com.pickpick.pickpick.presentation.pick.captureresult.CaptureResultScreen
-import com.pickpick.pickpick.presentation.pick.imagedecorator.DrawingScreen
 import com.pickpick.pickpick.presentation.pick.selectbackground.SelectBackgroundScreen
 import com.pickpick.pickpick.presentation.pick.selectslot.SelectSlotScreen
 import com.pickpick.pickpick.presentation.pick.takepicture.TakePictureScreen
-import com.pickpick.pickpick.presentation.splash.SplashScreen
 
 
 @Composable
@@ -158,7 +157,7 @@ fun NavGraphBuilder.pickGraph(
     onPickComplete: () -> Unit,
 ) {
     navigation<PickGraph>(
-        startDestination = PickRoute.PictureDecorateRoute
+        startDestination = PickRoute.SelectBackgroundRoute
     ) {
         composable<PickRoute.SelectBackgroundRoute> { backStackEntry ->
             SelectBackgroundScreen(
@@ -188,12 +187,19 @@ fun NavGraphBuilder.pickGraph(
         composable<PickRoute.PictureResultRoute> { backStackEntry ->
             CaptureResultScreen(
                 onNavigateToDecorate = {
-//                    navHostController.navigate(PickRoute.PictureDecorateRoute)
+                    navHostController.navigate(PickRoute.PictureDecorateRoute)
                 })
         }
         composable<PickRoute.PictureDecorateRoute> { backStackEntry ->
-            DrawingScreen()
+//            TestScreen()
+//            DrawingScreen()
+
+//            ZoomableImage(
+//                modifier = Modifier.fillMaxSize(),
+//                painter = painterResource(R.drawable.frame),
+//            )
         }
+
     }
 }
 

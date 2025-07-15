@@ -20,21 +20,22 @@ import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
-import com.pickpick.pickpick.FrameLayout
+import com.pickpick.pickpick.core.ui.component.pickpick.slot.Slot
 import com.pickpick.pickpick.core.ui.component.pickpick.slot.SlotAction
 import com.pickpick.pickpick.core.ui.component.pickpick.slot.SlotItem
 import com.pickpick.pickpick.core.ui.component.pickpick.slot.SlotType
 import com.pickpick.pickpick.core.util.SlotLayoutUtil
+import com.pickpick.pickpick.domain.pick.model.FrameLayout
 import com.pickpick.pickpick.presentation.pick.selectslot.viewmodel.SlotLayout
 
 @Composable
 fun SlotGridRatioLayout(
     modifier: Modifier = Modifier,
     painter: Painter,
-    slotType: SlotType,
+    slotType: Slot,
     items: List<SlotType>,
     setFrameLayout: (FrameLayout) -> Unit,
-    setSlotLayouts: (List<SlotLayout>) -> Unit,
+    setSlotLayouts: (List<SlotType>) -> Unit,
     ratioSlotLayouts: List<SlotLayout>,
     onSlotAction: (SlotAction) -> Unit,
 ) {
@@ -57,7 +58,10 @@ fun SlotGridRatioLayout(
 
             // 슬롯 레이아웃 계산
             val slotLayouts = SlotLayoutUtil.getSlotLayoutInfo(
-                density = density, frameLayout = frameLayout, slotLayouts = ratioSlotLayouts
+                density = density,
+                frameLayout = frameLayout,
+                slotLayouts = ratioSlotLayouts,
+                slot = slotType
             )
             setSlotLayouts(slotLayouts)
         }
@@ -102,7 +106,7 @@ fun SlotGridRatioLayout(
                     }
                 })
         when (slotType) {
-            is SlotType.Position -> {
+            Slot.POSITION -> {
                 repeat(items.size) { index ->
                     SlotItem(
                         modifier = modifier,
@@ -112,7 +116,17 @@ fun SlotGridRatioLayout(
                 }
             }
 
-            is SlotType.Camera -> {
+            Slot.CAMERA -> {
+                repeat(items.size) { index ->
+                    SlotItem(
+                        modifier = modifier,
+                        slotType = items[index],
+                        onSlotAction = onSlotAction,
+                    )
+                }
+            }
+
+            Slot.CAMERA_RESULT -> {
                 repeat(items.size) { index ->
                     SlotItem(
                         modifier = modifier,
@@ -122,8 +136,5 @@ fun SlotGridRatioLayout(
                 }
             }
         }
-
     }
-
-
 }

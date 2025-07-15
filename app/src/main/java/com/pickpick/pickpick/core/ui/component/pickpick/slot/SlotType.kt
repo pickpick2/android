@@ -3,11 +3,15 @@ package com.pickpick.pickpick.core.ui.component.pickpick.slot
 import android.net.Uri
 import com.pickpick.pickpick.presentation.pick.selectslot.viewmodel.SlotLayout
 
+enum class Slot {
+    POSITION, CAMERA, CAMERA_RESULT
+}
+
 sealed class SlotType {
     abstract val slotLayout: SlotLayout
 
     val isSelected: Boolean
-        get() = slotLayout.selectUser != null
+        get() = slotLayout.selectedUser != null
 
     /**
     프레임 기준 x좌표가 절반보다 왼쪽에 있는지
@@ -31,12 +35,14 @@ sealed class SlotType {
         val uri: Uri?,
     ) : SlotType()
 
-//    data class CaptureResult(
-//        override val index: Int,
-//        override val item: Int,
-//        override val isSelected: Boolean,
-//        val uri: Uri?,
-//    ) : SlotType()
+    /**
+     * 촬영 결과 슬롯
+     */
+    data class CameraResult(
+        override val slotLayout: SlotLayout,
+        val uri: Uri?,
+    ) : SlotType()
+
 }
 
 

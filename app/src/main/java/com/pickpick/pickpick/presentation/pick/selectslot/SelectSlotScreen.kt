@@ -21,13 +21,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.pickpick.pickpick.R
 import com.pickpick.pickpick.core.ui.component.ParticipationAppBar
 import com.pickpick.pickpick.core.ui.component.pickpick.SlotDescription
+import com.pickpick.pickpick.core.ui.component.pickpick.slot.Slot
 import com.pickpick.pickpick.core.ui.component.pickpick.slot.SlotAction
-import com.pickpick.pickpick.core.ui.component.pickpick.slot.SlotType
 import com.pickpick.pickpick.core.ui.component.timer.rememberTimerState
 import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicTypography.Heading1
 import com.pickpick.pickpick.presentation.pick.selectslot.ui.SlotGridRatioLayout
 import com.pickpick.pickpick.presentation.pick.selectslot.viewmodel.SelectSlotViewModel
-import com.pickpick.pickpick.presentation.pick.selectslot.viewmodel.SlotLayout
 import com.pickpick.pickpick.presentation.pick.selectslot.viewmodel.UserInfo
 
 @Composable
@@ -45,11 +44,7 @@ fun SelectSlotScreen(
     // todo dummy data 나중에 삭제 예정
     val painter = painterResource(id = R.drawable.frame)
 
-    val slotItems = uiState.slotLayouts.map {
-        SlotType.Position(
-            slotLayout = it
-        )
-    }
+    val slotItems = uiState.slotLayouts
 
 
     var timerState = rememberTimerState(initialSeconds = 20)
@@ -80,7 +75,7 @@ fun SelectSlotScreen(
         Spacer(modifier = modifier.height(10.dp))
 
         SlotGridRatioLayout(
-            slotType = SlotType.Position(slotLayout = SlotLayout()),
+            slotType = Slot.POSITION,
             items = slotItems,
             painter = painter,
             setFrameLayout = viewModel::setFrameLayout,
