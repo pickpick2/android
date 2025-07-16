@@ -22,21 +22,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.pickpick.pickpick.R
+import com.pickpick.pickpick.core.ui.theme.clickableNoRipple
 import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicFallback
 import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicTypography.DetailBold
+import com.pickpick.pickpick.domain.album.model.Photo
 
 @Composable
 fun AlbumItem(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    photo: Photo = Photo(),
+    onDeleteClick: () -> Unit
 ) {
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .width(168.dp)
     ) {
-        // TODO: 이미지 추가
         AsyncImage(
-            model = "",
+            model = photo.url,
             contentDescription = "사진",
             contentScale = ContentScale.Crop,
             modifier = Modifier
@@ -53,19 +56,20 @@ fun AlbumItem(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // TODO: 제목 추가
                 Text(
-                    text = "사진 제목",
+                    text = photo.title,
                     style = DetailBold
                 )
 
                 Spacer(modifier = Modifier.width(4.dp))
 
-                // TODO: 휴지통 아이콘 추가
+                // 앨범 삭제
                 Image(
                     painter = painterResource(id = R.drawable.icon_trash),
                     contentDescription = null,
-                    modifier = Modifier.size(16.dp)
+                    modifier = Modifier
+                        .size(16.dp)
+                        .clickableNoRipple(onDeleteClick)
                 )
             }
 
@@ -73,16 +77,14 @@ fun AlbumItem(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                // TODO: 시계 아이콘 추가
                 Image(
                     painter = painterResource(id = R.drawable.icon_time),
                     contentDescription = null,
                     modifier = Modifier.size(12.dp)
                 )
 
-                // TODO: 날짜 추가
                 Text(
-                    text = "시간",
+                    text = photo.createdAt,
                     fontFamily = PyeojinGothicFallback,
                     fontWeight = FontWeight.Medium,
                     fontSize = 10.sp
@@ -96,5 +98,5 @@ fun AlbumItem(
 @Composable
 @Preview(showBackground = true)
 fun AlbumItemPreview() {
-    AlbumItem()
+    AlbumItem(onDeleteClick = {})
 }
