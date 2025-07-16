@@ -1,17 +1,17 @@
-package com.pickpick.pickpick.presentation.pick.selectslot.viewmodel
+package com.pickpick.pickpick.presentation.pick.captureresult.viewmodel
 
-import android.util.Log
 import com.pickpick.pickpick.core.presentation.BaseViewModel
 import com.pickpick.pickpick.core.ui.component.pickpick.slot.SlotType
 import com.pickpick.pickpick.domain.pick.model.FrameLayout
+import com.pickpick.pickpick.presentation.pick.selectslot.viewmodel.SlotLayout
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class SelectSlotViewModel @Inject constructor() :
-    BaseViewModel<SelectSlotUiState>(SelectSlotUiState()) {
-
+class CaptureResultViewModel @Inject constructor() : BaseViewModel<CaptureResultUiState>(
+    CaptureResultUiState()
+) {
     init {
         _uiState.update {
             it.copy(ratioSlotLayouts = getSlotInfos())
@@ -28,43 +28,15 @@ class SelectSlotViewModel @Inject constructor() :
     }
 
     fun setSlotLayouts(slotLayouts: List<SlotType>) {
-
-
         // 이전 값과 다를 때만 업데이트
         if (_uiState.value.slotLayouts != slotLayouts) {
             _uiState.update {
-                it.copy(slotLayouts = slotLayouts as List<SlotType.Position>)
+                it.copy(slotLayouts = slotLayouts as List<SlotType.CameraResult>)
             }
         }
     }
 
-    fun selectSlot(slotIndex: Int, userInfo: UserInfo) {
-        Log.d("SelectSlotViewModel", "selectSlot called with slotIndex: $slotIndex")
-        _uiState.update { currentState ->
-            val updatedSlotLayouts = currentState.slotLayouts.mapIndexed { index, slotLayout ->
-                when {
-                    // 선택된 슬롯인 경우
-                    index == slotIndex -> {
-                        if (slotLayout.slotLayout.selectedUser == null) {
-                            slotLayout.copy(slotLayout = slotLayout.slotLayout.copy(selectedUser = userInfo))
-                        } else {
-                            slotLayout.copy(slotLayout = slotLayout.slotLayout.copy(selectedUser = null)) // 선택 해제
-                        }
-                    }
-                    // 다른 슬롯에서 같은 유저 선택 해제 (한 명당 하나의 슬롯만)
-                    slotLayout.slotLayout.selectedUser?.id == userInfo.id -> {
-                        slotLayout.copy(slotLayout = slotLayout.slotLayout.copy(selectedUser = null))
-                    }
-
-                    else -> slotLayout
-                }
-            }
-
-            currentState.copy(slotLayouts = updatedSlotLayouts)
-        }
-    }
 }
-
 
 // todo dummy data 나중에 삭제 예정
 private fun getSlotInfos(): List<SlotLayout> = listOf(

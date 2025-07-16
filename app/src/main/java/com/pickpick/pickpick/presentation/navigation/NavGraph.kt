@@ -11,6 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.pickpick.pickpick.presentation.album.AlbumScreen
+import com.pickpick.pickpick.presentation.SplashScreen
 import com.pickpick.pickpick.presentation.auth.complete.CompleteScreen
 import com.pickpick.pickpick.presentation.auth.findemail.FindEmailScreen
 import com.pickpick.pickpick.presentation.auth.findpassword.FindPasswordScreen
@@ -35,6 +36,7 @@ import com.pickpick.pickpick.presentation.pick.selectslot.SelectSlotScreen
 import com.pickpick.pickpick.presentation.pick.takepicture.TakePictureScreen
 import com.pickpick.pickpick.presentation.SplashScreen
 import com.pickpick.pickpick.presentation.pick.selectframe.viewmodel.FrameViewModel
+
 
 @Composable
 fun NavGraph(
@@ -249,12 +251,13 @@ fun NavGraphBuilder.pickGraph(
         composable<PickRoute.PictureResultRoute> { backStackEntry ->
             CaptureResultScreen(
                 onNavigateToDecorate = {
-//                    navHostController.navigate(PickRoute.PictureDecorateRoute)
+                    navHostController.navigate(PickRoute.PictureDecorateRoute)
                 })
         }
         composable<PickRoute.PictureDecorateRoute> { backStackEntry ->
 //            DrawingScreen()
         }
+
     }
 }
 
