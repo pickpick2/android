@@ -25,7 +25,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.pickpick.pickpick.LayoutInfo
+import com.pickpick.pickpick.domain.pick.model.LayoutInfo
 import com.pickpick.pickpick.presentation.pick.imagedecorator.ui.DrawingCanvas
 import com.pickpick.pickpick.presentation.pick.imagedecorator.ui.DrawingToolbar
 import com.pickpick.pickpick.presentation.pick.imagedecorator.viewmodel.DrawingViewModel
