@@ -4,38 +4,37 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.pickpick.pickpick.presentation.album.AlbumScreen
 import com.pickpick.pickpick.presentation.SplashScreen
+import com.pickpick.pickpick.presentation.album.AlbumScreen
 import com.pickpick.pickpick.presentation.auth.complete.CompleteScreen
 import com.pickpick.pickpick.presentation.auth.findemail.FindEmailScreen
 import com.pickpick.pickpick.presentation.auth.findpassword.FindPasswordScreen
+import com.pickpick.pickpick.presentation.auth.info.InfoScreen
+import com.pickpick.pickpick.presentation.auth.info.viewmodel.InfoViewModel
 import com.pickpick.pickpick.presentation.auth.login.LoginScreen
 import com.pickpick.pickpick.presentation.auth.policy.PolicyScreen
 import com.pickpick.pickpick.presentation.auth.resetpw.ResetPWScreen
 import com.pickpick.pickpick.presentation.auth.signup.SignUpScreen
+import com.pickpick.pickpick.presentation.auth.signup.SignupCompleteScreen
 import com.pickpick.pickpick.presentation.auth.signup.viewmodel.SignUpViewModel
 import com.pickpick.pickpick.presentation.auth.start.StartScreen
-import com.pickpick.pickpick.presentation.auth.info.InfoScreen
-import com.pickpick.pickpick.presentation.auth.info.viewmodel.InfoViewModel
-import com.pickpick.pickpick.presentation.auth.signup.SignupCompleteScreen
 import com.pickpick.pickpick.presentation.main.MainScreen
 import com.pickpick.pickpick.presentation.pick.backgroundresult.BackgroundResultScreen
 import com.pickpick.pickpick.presentation.pick.captureresult.CaptureResultScreen
+import com.pickpick.pickpick.presentation.pick.imagedecorator.DrawingScreen
 import com.pickpick.pickpick.presentation.pick.room.CreateRoomScreen
 import com.pickpick.pickpick.presentation.pick.room.ReadyScreen
 import com.pickpick.pickpick.presentation.pick.selectbackground.SelectBackgroundScreen
 import com.pickpick.pickpick.presentation.pick.selectframe.FrameResultScreen
 import com.pickpick.pickpick.presentation.pick.selectframe.SelectFrameScreen
+import com.pickpick.pickpick.presentation.pick.selectframe.viewmodel.FrameViewModel
 import com.pickpick.pickpick.presentation.pick.selectslot.SelectSlotScreen
 import com.pickpick.pickpick.presentation.pick.takepicture.TakePictureScreen
-import com.pickpick.pickpick.presentation.SplashScreen
-import com.pickpick.pickpick.presentation.pick.selectframe.viewmodel.FrameViewModel
 
 
 @Composable
@@ -254,8 +253,10 @@ fun NavGraphBuilder.pickGraph(
                     navHostController.navigate(PickRoute.PictureDecorateRoute)
                 })
         }
+
         composable<PickRoute.PictureDecorateRoute> { backStackEntry ->
-//            DrawingScreen()
+            DrawingScreen()
+//            TestScreen()
         }
 
     }
@@ -302,7 +303,7 @@ fun NavGraphBuilder.mainGraph(
         composable<MainRoute.StartRoute> { backStackEntry ->
             MainScreen(
                 onCameraClick = {
-                    navHostController.navigate(PickRoute.CreateRoomRoute)
+                    navHostController.navigate(PickGraph)
                 },
                 onGalleryClick = {
                     navHostController.navigate(AlbumRoute.AlbumListRoute)

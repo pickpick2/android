@@ -15,6 +15,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 import androidx.compose.ui.graphics.Path as ComposePath
+import androidx.core.graphics.createBitmap
 
 
 @HiltViewModel
@@ -70,7 +71,7 @@ class DrawingViewModel @Inject constructor() : BaseViewModel<DrawingUiState>(Dra
      */
     fun initializeBitmap(width: Int, height: Int) {
         if (androidBitmap == null) {
-            androidBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+            androidBitmap = createBitmap(width, height)
             androidBitmap?.eraseColor(android.graphics.Color.WHITE)
             bitmapCanvas = Canvas(androidBitmap!!)
 
