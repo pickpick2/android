@@ -53,7 +53,7 @@ fun NavGraph(
             composable<SplashRoute> {
                 SplashScreen(
                     onNavigateToLogin = {
-                        navController.navigate(MainRoute.StartRoute) {
+                        navController.navigate(AuthRoute.StartRoute) {
                             popUpTo(SplashRoute) {
                                 inclusive = true
                             }
@@ -62,7 +62,13 @@ fun NavGraph(
             }
 
             // 인증 관련 그래프 (로그인, 회원가입 등)
-            authGraph(navController, onAuthComplete = {})
+            authGraph(navController, onAuthComplete = {
+                navController.navigate(MainRoute.StartRoute) {
+                    popUpTo(AuthRoute.StartRoute) {
+                        inclusive = true
+                    }
+                }
+            })
 
             // 픽픽 그래프
             pickGraph(navController, onPickComplete = {})
@@ -168,7 +174,7 @@ fun NavGraphBuilder.pickGraph(
     onPickComplete: () -> Unit,
 ) {
     navigation<PickGraph>(
-        startDestination = PickRoute.PictureDecorateRoute
+        startDestination = PickRoute.CreateRoomRoute
     ) {
         composable<PickRoute.CreateRoomRoute> { backStackEntry ->
             CreateRoomScreen(
