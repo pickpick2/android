@@ -20,6 +20,12 @@ class TokenDataStore @Inject constructor(
         val REFRESH_TOKEN = stringPreferencesKey("refresh_token")
     }
 
+    suspend fun saveAccessToken(accessToken: String) {
+        dataStore.edit { prefs ->
+            prefs[ACCESS_TOKEN] = accessToken
+        }
+    }
+
     suspend fun saveTokens(accessToken: String, refreshToken: String) {
         dataStore.edit { prefs ->
             prefs[ACCESS_TOKEN] = accessToken
