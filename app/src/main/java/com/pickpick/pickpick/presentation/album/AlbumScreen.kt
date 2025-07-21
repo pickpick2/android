@@ -45,7 +45,7 @@ fun AlbumScreen(
     val albums = uiState.pagedPhotos.collectAsLazyPagingItems()
 
     var showDialog by remember { mutableStateOf(false) }
-    var selectedPhotoId by remember { mutableStateOf<String>("") }
+    var selectedPhotoId by remember { mutableStateOf("") }
 
     if (showDialog && selectedPhotoId.isNotEmpty()) {
         DeletePhotoDialog(

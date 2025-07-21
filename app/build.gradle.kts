@@ -119,4 +119,8 @@ dependencies {
     implementation(libs.androidx.paging.runtime)
     implementation(libs.androidx.paging.compose)
 
+    implementation(libs.stomp.client)
+    implementation(libs.rxjava)
+    implementation(libs.rxandroid)
+
 }
