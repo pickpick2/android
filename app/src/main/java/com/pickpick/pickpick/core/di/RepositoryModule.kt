@@ -1,8 +1,10 @@
 package com.pickpick.pickpick.core.di
 
 import com.pickpick.pickpick.data.album.remote.repository.AlbumRepositoryImpl
+import com.pickpick.pickpick.data.pick.remote.repository.PickRepositoryImpl
 import com.pickpick.pickpick.data.websocket.WebSocketRepositoryImpl
 import com.pickpick.pickpick.domain.album.repository.AlbumRepository
+import com.pickpick.pickpick.domain.pick.repository.PickRepository
 import com.pickpick.pickpick.domain.websocket.repository.WebSocketRepository
 import dagger.Binds
 import dagger.Module
@@ -20,6 +22,12 @@ internal abstract class RepositoryModule {
     abstract fun bindAlbumRemoteRepository(
         albumRepositoryImpl: AlbumRepositoryImpl
     ): AlbumRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindPickRemoteRepository(
+        pickRepositoryImpl: PickRepositoryImpl
+    ): PickRepository
 
     @Binds
     @Singleton
