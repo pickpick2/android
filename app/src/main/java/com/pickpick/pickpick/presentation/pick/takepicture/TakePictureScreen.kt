@@ -10,19 +10,19 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.pickpick.pickpick.R
 import com.pickpick.pickpick.core.ui.component.ParticipationAppBar
 import com.pickpick.pickpick.core.ui.component.pickpick.SlotDescription
+import com.pickpick.pickpick.core.ui.component.pickpick.slot.Slot
 import com.pickpick.pickpick.core.ui.component.pickpick.slot.SlotAction
-import com.pickpick.pickpick.core.ui.component.pickpick.slot.SlotType
 import com.pickpick.pickpick.core.ui.component.timer.rememberTimerState
 import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicTypography.Heading1
-import com.pickpick.pickpick.presentation.pick.selectslot.ui.SlotGridLayout
+import com.pickpick.pickpick.presentation.pick.selectslot.ui.SlotGridRatioLayout
 import com.pickpick.pickpick.presentation.pick.takepicture.viewmodel.CameraViewModel
 
 @Composable
@@ -38,16 +38,16 @@ fun TakePictureScreen(
     }
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val slotItems = MutableList<SlotType.Camera>(12) {
-        SlotType.Camera(
-            it, it, uiState.selectedSlots.contains(it), uiState.capturedPhotoUri?.toUri()
-        )
-    }
+
+    // todo dummy data 나중에 삭제 예정
+    val painter = painterResource(id = R.drawable.frame)
+
+    val slotItems = uiState.slotLayouts
 
     var timerState = rememberTimerState(initialSeconds = 20)
     LaunchedEffect(timerState.isCompleted) {
         if (timerState.isCompleted) {
-//            onNavigateToResult()
+            onNavigateToResult()
         }
     }
 
@@ -71,14 +71,19 @@ fun TakePictureScreen(
         )
         Spacer(modifier = modifier.height(10.dp))
 
-        SlotGridLayout(
-            items = slotItems, colCount = 2,
+        SlotGridRatioLayout(
+            slotType = Slot.CAMERA,
+            items = slotItems,
+            painter = painter,
+            setFrameLayout = viewModel::setFrameLayout,
+            setSlotLayouts = viewModel::setSlotLayouts,
+            ratioSlotLayouts = uiState.ratioSlotLayouts,
             onSlotAction = { action ->
                 if (action is SlotAction.CapturePhoto) {
-                    viewModel.capturePhoto(action.uri)
+                    viewModel.capturePhoto(uri = action.uri)
                 }
-            },
-        )
+            })
+
 
     }
 }

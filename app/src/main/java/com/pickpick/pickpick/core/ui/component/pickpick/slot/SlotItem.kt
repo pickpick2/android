@@ -10,9 +10,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -51,11 +49,12 @@ import com.pickpick.pickpick.core.ui.component.pickpick.SelectedUser
 import com.pickpick.pickpick.core.ui.theme.Border
 import com.pickpick.pickpick.core.ui.theme.PrimaryDefault
 import com.pickpick.pickpick.core.ui.theme.PrimaryLight
+import com.pickpick.pickpick.core.ui.theme.PrimaryLighter
 import com.pickpick.pickpick.core.ui.theme.SecondaryDefault
 import com.pickpick.pickpick.core.ui.theme.White
 import com.pickpick.pickpick.core.ui.theme.clickableNoRipple
 import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicTypography.DetailRegular
-import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicTypography.Heading1
+import com.pickpick.pickpick.presentation.pick.selectslot.viewmodel.SlotLayout
 import com.pickpick.pickpick.presentation.pick.takepicture.ui.CameraPreview
 import com.pickpick.pickpick.presentation.pick.takepicture.ui.capturePhoto
 import kotlinx.coroutines.launch
@@ -73,13 +72,21 @@ fun SlotItem(
                 onSlotAction(SlotAction.SelectPosition(index))
             })
 
-        is SlotType.Camera -> CameraSlot(
-            rootModifier = modifier, slotData = slotType,
-            onCapture = { index, uri ->
-                onSlotAction(SlotAction.CapturePhoto(uri))
-            },
-        )
+        is SlotType.Camera -> {
+            CameraSlot(
+                slotData = slotType,
+                onCapture = { index, uri ->
+                    onSlotAction(SlotAction.CapturePhoto(uri))
+                },
+            )
+        }
 
+        is SlotType.CameraResult -> {
+            CapturedImageDisplay(
+                slotType = slotType, imageUri = slotType.uri ?: Uri.EMPTY, modifier = modifier
+
+            )
+        }
     }
 }
 
@@ -93,24 +100,27 @@ fun PositionSlotItem(
     Box {
         Box(
             modifier = modifier
-                .fillMaxWidth()
-                .aspectRatio(1f)
+                .size(
+                    slotData.slotLayout.width.dp, slotData.slotLayout.height.dp
+                )
+                .offset(
+                    slotData.slotLayout.x.dp, slotData.slotLayout.y.dp
+                )
                 .clickableNoRipple {
-                    onSelect(slotData.index)
+                    onSelect(slotData.slotLayout.index)
                 }
                 .border(
-                    width = 1.dp,
-                    color = if (slotData.isSelected) PrimaryLight else Border,
+                    width = 3.dp,
+                    color = if (slotData.isSelected) PrimaryLight else PrimaryLighter,
                     shape = RoundedCornerShape(5.dp)
-                )) {
-            Text(text = slotData.item.toString(), style = Heading1)
-        }
+                ),
+        )
         if (slotData.isSelected) Box(
-            modifier = modifier
-                .align(if (slotData.index % 2 == 0) Alignment.TopStart else Alignment.TopEnd)
-                .offset(
-                    x = if (slotData.index % 2 == 0) -15.dp else 15.dp, y = -15.dp
-                )
+            modifier = modifier.offset(
+                x = if (slotData.isLeftPosition) slotData.slotLayout.x.dp - 15.dp
+                else slotData.slotLayout.x.dp + slotData.slotLayout.width.dp - 15.dp,
+                y = slotData.slotLayout.y.dp - 15.dp
+            )
         ) {
             SelectedUser(
                 imageUrl = "https://i.guim.co.uk/img/media/327aa3f0c3b8e40ab03b4ae80319064e401c6fbc/377_133_3542_2834/master/3542.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=34d32522f47e4a67286f9894fc81c863"
@@ -123,7 +133,6 @@ fun PositionSlotItem(
 @Composable
 fun CameraSlot(
     modifier: Modifier = Modifier,
-    rootModifier: Modifier = Modifier,
     slotData: SlotType.Camera,
     onCapture: (Int, Uri) -> Unit = { _, _ -> },
     onPermissionRequest: () -> Unit = {}
@@ -144,122 +153,126 @@ fun CameraSlot(
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
 
-    Box(modifier = rootModifier) {
-        Box(
-            modifier = modifier
-                .matchParentSize()
-                .border(
-                    width = 1.dp,
-                    color = if (slotData.isSelected) PrimaryLight else Border,
-                    shape = RoundedCornerShape(5.dp)
-                )
-                .clip(shape = RoundedCornerShape(5.dp))
-        ) {
+    Box(
+        modifier = modifier
+            .size(
+                slotData.slotLayout.width.dp, slotData.slotLayout.height.dp
+            )
+            .offset(
+                slotData.slotLayout.x.dp, slotData.slotLayout.y.dp
+            )
+            .border(
+                width = 1.dp,
+                color = if (slotData.isSelected) PrimaryLight else PrimaryLighter,
+                shape = RoundedCornerShape(5.dp)
+            )
+            .clip(shape = RoundedCornerShape(5.dp))
+    ) {
 
-            // todo 본인 id와 매칭 수정
-            if (slotData.index == 0) {
-                when {
-                    // 촬영된 이미지가 있으면 이미지 표시
-                    slotData.uri != null -> {
-                        CapturedImageDisplay(
-                            imageUri = slotData.uri,
-                            modifier = Modifier.fillMaxSize(),
-                        )
-                    }
-                    // 카메라 권한이 있을 때
-                    cameraPermissionState.status.isGranted -> {
-                        CameraPreview(
-                            modifier = Modifier.fillMaxSize(),
-                            cameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA,
-                            onImageCaptureReady = { capture ->
-                                imageCapture = capture // ImageCapture 준비 완료
-                            })
-                    }
-                    // 권한 설명이 필요할 때
-                    cameraPermissionState.status.shouldShowRationale -> {
-                        CameraPermissionRationale(
-                            onRequestPermission = { cameraPermissionState.launchPermissionRequest() })
-                    }
-                    // 처음 권한 요청 또는 거부됨
-                    else -> {
-                        CameraPermissionRequest(
-                            onRequestPermission = { cameraPermissionState.launchPermissionRequest() })
-                    }
+        // todo 본인 id와 매칭 수정
+        if (slotData.slotLayout.index == 0) {
+            when {
+                // 촬영된 이미지가 있으면 이미지 표시
+                slotData.uri != null -> {
+                    CapturedImageDisplay(
+                        slotType = slotData,
+                        imageUri = slotData.uri,
+                    )
                 }
-
-                // 촬영 상태 오버레이
-                if (isCapturing) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(Color.Black.copy(alpha = 0.5f)),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator(color = White)
-                    }
+                // 카메라 권한이 있을 때
+                cameraPermissionState.status.isGranted -> {
+                    CameraPreview(
+                        modifier = Modifier.fillMaxSize(),
+                        cameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA,
+                        onImageCaptureReady = { capture ->
+                            imageCapture = capture // ImageCapture 준비 완료
+                        })
                 }
+                // 권한 설명이 필요할 때
+                cameraPermissionState.status.shouldShowRationale -> {
+                    CameraPermissionRationale(
+                        onRequestPermission = { cameraPermissionState.launchPermissionRequest() })
+                }
+                // 처음 권한 요청 또는 거부됨
+                else -> {
+                    CameraPermissionRequest(
+                        onRequestPermission = { cameraPermissionState.launchPermissionRequest() })
+                }
+            }
 
-                // 버튼들 - 상태에 따라 다른 버튼 표시
-                when {
-                    // 촬영된 이미지가 있을 때 - 다시 촬영 버튼
-                    slotData.uri != null -> {
-                        IconButton(
-                            modifier = Modifier.align(Alignment.BottomCenter), onClick = {
-                                // todo 재촬영 기능 넣을지 말지
+            // 촬영 상태 오버레이
+            if (isCapturing) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.Black.copy(alpha = 0.5f)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(color = White)
+                }
+            }
+
+            // 버튼들 - 상태에 따라 다른 버튼 표시
+            when {
+                // 촬영된 이미지가 있을 때 - 다시 촬영 버튼
+                slotData.uri != null -> {
+                    IconButton(
+                        modifier = Modifier.align(Alignment.BottomCenter), onClick = {
+                            // todo 재촬영 기능 넣을지 말지
 //                                slotData.uri = null
-                            }) {
-                            RetakeButton()
-                        }
+                        }) {
+                        RetakeButton()
                     }
-                    // 카메라 프리뷰 상태일 때 - 촬영 버튼
-                    cameraPermissionState.status.isGranted && !isCapturing -> {
-                        IconButton(
-                            modifier = Modifier.align(Alignment.BottomCenter), onClick = {
-                                imageCapture?.let { capture ->
-                                    coroutineScope.launch {
-                                        isCapturing = true
-                                        try {
-                                            // todo 콜백으로 변경 시간초과 될 경우 자동 촬영 기능
-                                            val uri = capturePhoto(capture, context)
-                                            if (uri != null) {
-                                                onCapture(slotData.index, uri)
-                                            }
-                                        } finally {
-                                            isCapturing = false
+                }
+                // 카메라 프리뷰 상태일 때 - 촬영 버튼
+                cameraPermissionState.status.isGranted && !isCapturing -> {
+                    IconButton(
+                        modifier = Modifier.align(Alignment.BottomCenter), onClick = {
+                            imageCapture?.let { capture ->
+                                coroutineScope.launch {
+                                    isCapturing = true
+                                    try {
+                                        // todo 콜백으로 변경 시간초과 될 경우 자동 촬영 기능
+                                        val uri = capturePhoto(capture, context)
+                                        if (uri != null) {
+                                            onCapture(slotData.slotLayout.index, uri)
                                         }
+                                    } finally {
+                                        isCapturing = false
                                     }
                                 }
-                            }) {
-                            CaptureButton()
-                        }
+                            }
+                        }) {
+                        CaptureButton()
                     }
                 }
             }
+        }
 
 
-        }
-        if (slotData.isSelected) {
-            Box(
-                modifier = modifier
-                    .align(if (slotData.index % 2 == 0) Alignment.TopStart else Alignment.TopEnd)
-                    .offset(
-                        x = if (slotData.index % 2 == 0) -15.dp else 15.dp, y = -15.dp
-                    )
-            ) {
-                SelectedUser(
-                    imageUrl = "https://i.guim.co.uk/img/media/327aa3f0c3b8e40ab03b4ae80319064e401c6fbc/377_133_3542_2834/master/3542.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=34d32522f47e4a67286f9894fc81c863"
-                )
-            }
-        }
     }
 }
 
 
 @Composable
 fun CapturedImageDisplay(
-    imageUri: Uri, modifier: Modifier = Modifier
+    modifier: Modifier = Modifier, slotType: SlotType, imageUri: Uri
 ) {
-    Box(modifier = modifier) {
+    Box(
+        modifier = modifier
+            .size(
+                slotType.slotLayout.width.dp, slotType.slotLayout.height.dp
+            )
+            .offset(
+                slotType.slotLayout.x.dp, slotType.slotLayout.y.dp
+            )
+            .border(
+                width = 1.dp,
+                color = if (slotType.isSelected) PrimaryLight else PrimaryLighter,
+                shape = RoundedCornerShape(5.dp)
+            )
+            .clip(shape = RoundedCornerShape(5.dp)),
+    ) {
         AsyncImage(
             model = imageUri,
             contentDescription = "Captured Photo",
@@ -269,7 +282,7 @@ fun CapturedImageDisplay(
     }
 }
 
-// ✅ 촬영 버튼 컴포넌트
+// 촬영 버튼 컴포넌트
 @Composable
 fun CaptureButton() {
     Box(
@@ -288,7 +301,7 @@ fun CaptureButton() {
     }
 }
 
-// ✅ 다시 촬영 버튼 컴포넌트
+// 다시 촬영 버튼 컴포넌트
 @Composable
 fun RetakeButton() {
     Box(
@@ -372,5 +385,6 @@ fun CameraPermissionRationale(
 @Preview(showBackground = true)
 @Composable
 fun CameraSlotPreview() {
-    CameraSlot(slotData = SlotType.Camera(0, 0, false, null), onCapture = { _, _ -> })
+    CameraSlot(
+        slotData = SlotType.Camera(slotLayout = SlotLayout(), uri = null), onCapture = { _, _ -> })
 }

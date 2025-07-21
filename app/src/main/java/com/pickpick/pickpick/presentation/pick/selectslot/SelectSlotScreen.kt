@@ -4,12 +4,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -18,12 +21,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.pickpick.pickpick.R
 import com.pickpick.pickpick.core.ui.component.ParticipationAppBar
 import com.pickpick.pickpick.core.ui.component.pickpick.SlotDescription
+import com.pickpick.pickpick.core.ui.component.pickpick.slot.Slot
 import com.pickpick.pickpick.core.ui.component.pickpick.slot.SlotAction
-import com.pickpick.pickpick.core.ui.component.pickpick.slot.SlotType
 import com.pickpick.pickpick.core.ui.component.timer.rememberTimerState
 import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicTypography.Heading1
-import com.pickpick.pickpick.presentation.pick.selectslot.ui.SlotGridLayout
+import com.pickpick.pickpick.presentation.pick.selectslot.ui.SlotGridRatioLayout
 import com.pickpick.pickpick.presentation.pick.selectslot.viewmodel.SelectSlotViewModel
+import com.pickpick.pickpick.presentation.pick.selectslot.viewmodel.UserInfo
 
 @Composable
 fun SelectSlotScreen(
@@ -37,9 +41,11 @@ fun SelectSlotScreen(
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    val slotItems = MutableList<SlotType.Position>(12) {
-        SlotType.Position(it, it, uiState.selectedSlots.contains(it))
-    }
+    // todo dummy data 나중에 삭제 예정
+    val painter = painterResource(id = R.drawable.frame)
+
+    val slotItems = uiState.slotLayouts
+
 
     var timerState = rememberTimerState(initialSeconds = 20)
     LaunchedEffect(timerState.isCompleted) {
@@ -49,7 +55,9 @@ fun SelectSlotScreen(
     }
 
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         ParticipationAppBar(
@@ -66,15 +74,20 @@ fun SelectSlotScreen(
 
         Spacer(modifier = modifier.height(10.dp))
 
-        SlotGridLayout(
-            items = slotItems, colCount = 2, onSlotAction = { action ->
+        SlotGridRatioLayout(
+            slotType = Slot.POSITION,
+            items = slotItems,
+            painter = painter,
+            setFrameLayout = viewModel::setFrameLayout,
+            setSlotLayouts = viewModel::setSlotLayouts,
+            ratioSlotLayouts = uiState.ratioSlotLayouts,
+            onSlotAction = { action ->
                 if (action is SlotAction.SelectPosition) {
-                    viewModel.selectSlot(action.index)
+                    viewModel.selectSlot(action.index, UserInfo(1))
                 }
             })
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
