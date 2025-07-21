@@ -9,7 +9,7 @@ class WebSocketRepositoryImpl @Inject constructor(
     private val client: StompWebSocketClient
 ) : WebSocketRepository {
 
-    override fun connect(roomId: String, token: String) {
+    override fun connect(roomId: Int, token: String) {
         client.connect(roomId, token)
     }
 

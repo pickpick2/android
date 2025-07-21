@@ -19,13 +19,13 @@ class StompWebSocketClient {
     val messageFlow: SharedFlow<StompMessage> = _messageFlow
     private val disposables = CompositeDisposable()
 
-    fun connect(roomId: String, token: String) {
-        val url = "ws://54.91.200.235:8080/wss/connection/websocket"
+    fun connect(roomId: Int, token: String) {
+        val url = "http://54.91.200.235:8080/wss/connection"
         stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, url)
 
         val headers = listOf(
-            StompHeader("Authorization", token),
-            StompHeader("roomId", roomId)
+            StompHeader("Authorization", "Bearer $token"),
+            StompHeader("roomId", roomId.toString())
         )
 
         disposables.add(
@@ -82,5 +82,6 @@ class StompWebSocketClient {
             disposables.clear()
         }
     }
+
 }
 
