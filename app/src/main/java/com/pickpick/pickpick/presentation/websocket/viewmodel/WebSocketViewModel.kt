@@ -34,8 +34,33 @@ class WebSocketViewModel @Inject constructor(
         }
     }
 
-    fun send(destination: String, payload: Map<String, Any>) {
+    fun send(destination: String, payload: Map<String, Any> = emptyMap()) {
         repository.sendMessage(destination, payload)
+    }
+
+    // 방의 멤버 조회
+    fun getMembers() {
+        val currentRoomId = roomId ?: return
+        val destination = "/app/room/$currentRoomId/members"
+
+        send(destination)
+    }
+
+    // 멤버 준비 상태 변경
+    fun sendMemberStateUpdate(memberReadyState: String) {
+        val currentRoomId = roomId ?: return
+        val destination = "/app/room/$currentRoomId/member/state"
+        val payload = mapOf("memberReadyState" to memberReadyState)
+
+        send(destination, payload)
+    }
+
+    // 준비 완료 후 시작
+    fun sendStart() {
+        val currentRoomId = roomId ?: return
+        val destination = "/app/room/$currentRoomId/page"
+
+        send(destination)
     }
 
     // 배경 선택
@@ -47,11 +72,11 @@ class WebSocketViewModel @Inject constructor(
         send(destination, payload)
     }
 
-    // 멤버 준비 상태 변경
-    fun sendMemberStateUpdate(memberReadyState: String) {
+    // 방 인원 수 변경
+    fun sendCapacityUpdate(roomCapacity: Int) {
         val currentRoomId = roomId ?: return
-        val destination = "/app/room/$currentRoomId/member/state"
-        val payload = mapOf("memberReadyState" to memberReadyState)
+        val destination = "/app/room/$currentRoomId/capacity"
+        val payload = mapOf("roomCapacity" to roomCapacity)
 
         send(destination, payload)
     }
