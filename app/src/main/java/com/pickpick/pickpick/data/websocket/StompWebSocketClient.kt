@@ -20,7 +20,7 @@ class StompWebSocketClient {
     private val disposables = CompositeDisposable()
 
     fun connect(roomId: Int, token: String) {
-        val url = "http://54.91.200.235:8080/wss/connection"
+        val url = "ws://54.91.200.235:8080/wss/connection"
         stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, url)
 
         val headers = listOf(

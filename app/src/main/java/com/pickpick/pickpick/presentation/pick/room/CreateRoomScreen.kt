@@ -1,5 +1,6 @@
 package com.pickpick.pickpick.presentation.pick.room
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -23,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.pickpick.pickpick.R
+import com.pickpick.pickpick.core.result.ResultState
 import com.pickpick.pickpick.core.ui.component.BackLayout
 import com.pickpick.pickpick.core.ui.component.MainButton
 import com.pickpick.pickpick.core.ui.component.UnderlineTextField
@@ -31,16 +34,34 @@ import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicTypography.DetailRe
 import com.pickpick.pickpick.core.ui.theme.font.PyeojinGothicTypography.Heading1
 import com.pickpick.pickpick.presentation.album.component.CustomDropdown
 import com.pickpick.pickpick.presentation.pick.room.viewmodel.RoomViewModel
+import com.pickpick.pickpick.presentation.websocket.viewmodel.WebSocketViewModel
 
 @Composable
 fun CreateRoomScreen(
     modifier: Modifier = Modifier,
-    viewModel: RoomViewModel = hiltViewModel(),
+    roomViewModel: RoomViewModel = hiltViewModel(),
+    webSocketViewModel: WebSocketViewModel = hiltViewModel(),
     onNavigateToComplete: () -> Unit,
     onBackClick: () -> Unit
 ) {
 
-    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+    val uiState by roomViewModel.uiState.collectAsStateWithLifecycle()
+    val messageState by webSocketViewModel.messageState.collectAsStateWithLifecycle()
+
+    when (uiState.roomResult) {
+        is ResultState.Success -> {
+            val roomInfo = (uiState.roomResult as ResultState.Success).data
+            webSocketViewModel.connect(roomId = roomInfo.roomId)
+
+            Log.d("WebSocket", messageState.toString())
+
+//            onNavigateToComplete()
+        }
+
+        else -> {}
+    }
+
+    // TODO: 방 생성 성공 시 웹소켓 연결
 
     BackLayout(
         title = stringResource(R.string.create_room_top_bar),
@@ -63,7 +84,8 @@ fun CreateRoomScreen(
             Spacer(modifier = Modifier.height(70.dp))
 
             UnderlineTextField(
-                value = uiState.value.roomName, onValueChange = viewModel::updateRoomName,
+                value = uiState.roomName,
+                onValueChange = roomViewModel::updateRoomName,
                 placeholder = {
                     Text(
                         text = stringResource(R.string.create_room_name_placeholder),
@@ -77,12 +99,15 @@ fun CreateRoomScreen(
 
             // TODO: 인원 선택 추가
             var selectedPeople by remember { mutableStateOf("인원 선택") }
-            val options = listOf("1명", "2명", "3명", "4명", "5명", "6명")
+            val options = listOf("1", "2", "3", "4", "5", "6")
 
             CustomDropdown(
                 selectedOption = selectedPeople,
                 options = options,
-                onOptionSelected = { selectedPeople = it },
+                onOptionSelected = {
+                    selectedPeople = it
+                    roomViewModel.updatePeople(it.toInt())
+                },
                 icon = R.drawable.icon_people
             )
 
@@ -90,9 +115,8 @@ fun CreateRoomScreen(
 
             MainButton(
                 text = stringResource(R.string.create_room),
-//                enabled = uiState.value.enabled,
-                enabled = true,
-                onClick = onNavigateToComplete
+                enabled = uiState.enabled,
+                onClick = roomViewModel::createRoom
             )
         }
     }

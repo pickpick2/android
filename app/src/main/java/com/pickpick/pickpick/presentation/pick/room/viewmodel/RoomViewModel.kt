@@ -37,12 +37,13 @@ class RoomViewModel @Inject constructor(
     private fun enabledButton(
         roomName: String, people: Int
     ): Boolean =
-        roomName.isNotEmpty() && people > 0
+        people > 0
+//        roomName.isNotEmpty() && people > 0
 
     // 방 생성
-    fun createRoom(roomCapacity: Int) {
+    fun createRoom() {
         viewModelScope.launch {
-            val result = createRoomUseCase(roomCapacity)
+            val result = createRoomUseCase(uiState.value.people)
             updateState { it.copy(roomResult = result.toResultState()) }
         }
     }

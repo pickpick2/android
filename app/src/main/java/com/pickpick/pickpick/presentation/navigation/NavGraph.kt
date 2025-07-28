@@ -29,12 +29,14 @@ import com.pickpick.pickpick.presentation.pick.captureresult.CaptureResultScreen
 import com.pickpick.pickpick.presentation.pick.imagedecorator.DrawingScreen
 import com.pickpick.pickpick.presentation.pick.room.CreateRoomScreen
 import com.pickpick.pickpick.presentation.pick.room.ReadyScreen
+import com.pickpick.pickpick.presentation.pick.room.viewmodel.RoomViewModel
 import com.pickpick.pickpick.presentation.pick.selectbackground.SelectBackgroundScreen
 import com.pickpick.pickpick.presentation.pick.selectframe.FrameResultScreen
 import com.pickpick.pickpick.presentation.pick.selectframe.SelectFrameScreen
 import com.pickpick.pickpick.presentation.pick.selectframe.viewmodel.FrameViewModel
 import com.pickpick.pickpick.presentation.pick.selectslot.SelectSlotScreen
 import com.pickpick.pickpick.presentation.pick.takepicture.TakePictureScreen
+import com.pickpick.pickpick.presentation.websocket.viewmodel.WebSocketViewModel
 
 
 @Composable
@@ -177,7 +179,16 @@ fun NavGraphBuilder.pickGraph(
         startDestination = PickRoute.CreateRoomRoute
     ) {
         composable<PickRoute.CreateRoomRoute> { backStackEntry ->
+            val pickGraphEntry = remember(backStackEntry) {
+                navHostController.getBackStackEntry<PickRoute.CreateRoomRoute>()
+            }
+
+            val roomViewModel = hiltViewModel<RoomViewModel>(pickGraphEntry)
+            val webSocketViewModel = hiltViewModel<WebSocketViewModel>(pickGraphEntry)
+
             CreateRoomScreen(
+                roomViewModel = roomViewModel,
+                webSocketViewModel = webSocketViewModel,
                 onNavigateToComplete = {
                     navHostController.navigate(PickRoute.ReadyRoute)
                 },

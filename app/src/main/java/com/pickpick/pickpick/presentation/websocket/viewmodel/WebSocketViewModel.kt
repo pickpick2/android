@@ -1,28 +1,35 @@
 package com.pickpick.pickpick.presentation.websocket.viewmodel
 
+import android.system.Os.access
+import androidx.compose.runtime.snapshots.Snapshot.Companion.observe
 import com.pickpick.pickpick.domain.websocket.model.StompMessage
 import com.pickpick.pickpick.domain.websocket.repository.WebSocketRepository
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.pickpick.pickpick.core.data.TokenDataStore
+import com.pickpick.pickpick.core.result.ResultState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class WebSocketViewModel @Inject constructor(
+    private val tokenDataStore: TokenDataStore,
     private val repository: WebSocketRepository
 ) : ViewModel() {
 
+    private val access = tokenDataStore.accessTokenFlow
     private var roomId: Int? = null
 
     private val _messageState = MutableStateFlow<StompMessage?>(null)
     val messageState: StateFlow<StompMessage?> = _messageState
 
-    fun connect(roomId: Int, token: String) {
+    fun connect(roomId: Int) {
         this.roomId = roomId
-        repository.connect(roomId, token)
+        repository.connect(roomId, access.toString())
         observe()
     }
 
